@@ -9,7 +9,7 @@ import { openAiController } from '../controllers/open-ai';
 export const createOpenAiRouter = (): Router => {
   const router = Router();
 
-  router.get('/', openAiController.handleOpenAiRequest);
+  router.post('/', openAiController.handleOpenAiRequest);
 
   return router;
 };
