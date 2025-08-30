@@ -3,11 +3,12 @@
  * Functional programming approach with modular structure
  */
 
+import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import { openAiRouter } from './routes/open-ai';
 
-const PORT = 3001;
+const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3001;
 
 // Create Express app with functional approach
 const createApp = () => {

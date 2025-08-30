@@ -4,22 +4,25 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "tsx watch src/index.ts",
+    "dev": "tsx watch --clear-screen=false --ignore=dist --ignore=node_modules src/index.ts",
+    "dev:fast": "tsx watch --clear-screen=false --ignore=dist --ignore=node_modules --no-cache src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
     "lint": "eslint src --ext .ts",
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.1",
     "express": "^5.0.1",
-    "cors": "^2.8.5"
+    "openai": "^5.16.0"
   },
   "devDependencies": {
-    "@types/express": "^5.0.0",
     "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
     "@types/node": "^20",
-    "typescript": "^5",
+    "eslint": "^9",
     "tsx": "^4.19.2",
-    "eslint": "^9"
+    "typescript": "^5"
   }
 }
