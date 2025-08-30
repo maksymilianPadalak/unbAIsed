@@ -60,7 +60,32 @@ export const handleCompanySearch = async (
   }
 };
 
+export const handleGetAllCompanies = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    console.log('🏢 Fetching all companies...');
+    
+    const companies = await weaviateService.getAllCompanies();
+    
+    res.json({
+      success: true,
+      companies: companies,
+      count: companies.length
+    });
+  } catch (error) {
+    console.error('Error fetching all companies:', error);
+    res.status(500).json({ 
+      success: false,
+      error: 'Failed to fetch companies',
+      companies: []
+    });
+  }
+};
+
 export const weaviateController = {
   handleWeaviateRequest,
   handleCompanySearch,
+  handleGetAllCompanies,
 } as const;
