@@ -4,10 +4,14 @@ import { useEffect, useState } from "react";
 import { CompanyEthics } from "../../../../types";
 import CompanyScoreCard from "./CompanyScoreCard";
 
+type SortOption = "highest" | "lowest" | null;
+
 export default function CompanyScoresList() {
   const [companies, setCompanies] = useState<CompanyEthics[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [sortBy, setSortBy] = useState<SortOption>(null);
+  const [originalCompanies, setOriginalCompanies] = useState<CompanyEthics[]>([]);
 
   useEffect(() => {
     const fetchCompanies = async () => {
@@ -25,6 +29,7 @@ export default function CompanyScoresList() {
         const data = await response.json();
         
         if (data.success && data.companies) {
+          setOriginalCompanies(data.companies);
           setCompanies(data.companies);
         } else {
           throw new Error('Invalid response format');
@@ -88,6 +93,27 @@ export default function CompanyScoresList() {
     );
   }
 
+  // Handle sorting logic
+  const handleSort = (option: SortOption) => {
+    setSortBy(option);
+    
+    if (option === null) {
+      // Reset to original order
+      setCompanies([...originalCompanies]);
+      return;
+    }
+    
+    const sortedCompanies = [...companies].sort((a, b) => {
+      if (option === "highest") {
+        return b.ethicalScore - a.ethicalScore;
+      } else {
+        return a.ethicalScore - b.ethicalScore;
+      }
+    });
+    
+    setCompanies(sortedCompanies);
+  };
+  
   return (
     <div className="min-h-screen bg-black py-8">
       <div className="max-w-6xl mx-auto px-8">
@@ -97,9 +123,32 @@ export default function CompanyScoresList() {
             COMPANY SCORES
           </h1>
           <div className="border-t-4 border-white pt-4 text-center">
-            <p className="text-white font-mono text-lg font-bold">
+            <p className="text-white font-mono text-lg font-bold mb-6">
               {companies.length} COMPANIES ANALYZED
             </p>
+            
+            {/* Sorting Options */}
+            <div className="flex items-center justify-center space-x-4 pt-2">
+              <span className="text-white font-mono font-bold">SORT BY:</span>
+              
+              <button 
+                onClick={() => handleSort(sortBy === "highest" ? null : "highest")} 
+                className={`brutalist-button text-sm px-3 py-1 ${
+                  sortBy === "highest" ? "brutalist-active" : ""
+                }`}
+              >
+                HIGHEST ETHICS
+              </button>
+              
+              <button 
+                onClick={() => handleSort(sortBy === "lowest" ? null : "lowest")} 
+                className={`brutalist-button text-sm px-3 py-1 ${
+                  sortBy === "lowest" ? "brutalist-active" : ""
+                }`}
+              >
+                LOWEST ETHICS
+              </button>
+            </div>
           </div>
         </div>
 
