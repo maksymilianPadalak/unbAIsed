@@ -6,7 +6,15 @@ import SearchInput from '../../components/SearchInput';
 import SearchResults from '../../components/SearchResults';
 
 export default function SearchPage() {
-  const { search, loading, results, error } = useWeaviateSearch();
+  const { 
+    search, 
+    loading, 
+    researching, 
+    results, 
+    researchResults, 
+    error, 
+    currentSearchTerm 
+  } = useWeaviateSearch();
   const [hasSearched, setHasSearched] = useState(false);
 
   const handleSearch = (query: string) => {
@@ -30,16 +38,19 @@ export default function SearchPage() {
         {/* Search Input */}
         <SearchInput 
           onSearch={handleSearch}
-          loading={loading}
+          loading={loading || researching}
           placeholder="SEARCH COMPANIES..."
         />
 
         {/* Search Results */}
         <SearchResults 
           results={results}
+          researchResults={researchResults}
           loading={loading}
+          researching={researching}
           error={error}
           hasSearched={hasSearched}
+          currentSearchTerm={currentSearchTerm}
         />
       </div>
     </div>
