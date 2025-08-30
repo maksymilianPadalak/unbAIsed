@@ -36,7 +36,7 @@ export const handleCompanySearch = async (
 
     console.log(`🔍 Searching for company: ${companyName}`);
     
-    const company = await weaviateService.findCompanyByNameFuzzy(companyName.trim());
+    const company = await weaviateService.searchCompanyByName(companyName.trim());
     
     if (company) {
       res.json({
