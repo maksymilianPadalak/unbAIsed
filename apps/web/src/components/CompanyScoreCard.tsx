@@ -1,5 +1,5 @@
-import { CompanyEthics } from "../../../../types";
-import { ExternalLink } from "lucide-react";
+import { CompanyEthics } from '../../../../types';
+import { ExternalLink } from 'lucide-react';
 
 interface CompanyScoreCardProps {
   company: CompanyEthics;
@@ -7,17 +7,17 @@ interface CompanyScoreCardProps {
 
 export default function CompanyScoreCard({ company }: CompanyScoreCardProps) {
   const getScoreColor = (score: number): string => {
-    if (score >= 8) return "text-green-400";
-    if (score >= 6) return "text-yellow-400";
-    if (score >= 4) return "text-orange-400";
-    return "text-red-400";
+    if (score >= 8) return 'text-green-400';
+    if (score >= 6) return 'text-yellow-400';
+    if (score >= 4) return 'text-orange-400';
+    return 'text-red-400';
   };
 
   const getScoreLabel = (score: number): string => {
-    if (score >= 8) return "EXCELLENT";
-    if (score >= 6) return "GOOD";
-    if (score >= 4) return "POOR";
-    return "TERRIBLE";
+    if (score >= 8) return 'EXCELLENT';
+    if (score >= 6) return 'GOOD';
+    if (score >= 4) return 'POOR';
+    return 'TERRIBLE';
   };
 
   return (
@@ -29,11 +29,17 @@ export default function CompanyScoreCard({ company }: CompanyScoreCardProps) {
         </h3>
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center space-x-4">
-            <span className="text-white font-mono font-bold">ETHICS SCORE:</span>
-            <span className={`text-4xl font-black font-mono ${getScoreColor(company.ethicalScore)}`}>
+            <span className="text-white font-mono font-bold">
+              ETHICS SCORE:
+            </span>
+            <span
+              className={`text-4xl font-black font-mono ${getScoreColor(company.ethicalScore)}`}
+            >
               {company.ethicalScore}/10
             </span>
-            <span className={`border-3 border-white text-sm px-3 py-1 font-mono font-bold uppercase tracking-wider ${getScoreColor(company.ethicalScore)} bg-black`}>
+            <span
+              className={`border-3 border-white text-sm px-3 py-1 font-mono font-bold uppercase tracking-wider ${getScoreColor(company.ethicalScore)} bg-black`}
+            >
               {getScoreLabel(company.ethicalScore)}
             </span>
           </div>
@@ -42,7 +48,7 @@ export default function CompanyScoreCard({ company }: CompanyScoreCardProps) {
 
       {/* Description */}
       <div className="mb-6">
-        <p className="text-white font-mono leading-relaxed text-sm">
+        <p className="text-white font-mono leading-relaxed text-lg">
           {company.description}
         </p>
       </div>
