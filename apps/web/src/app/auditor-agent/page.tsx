@@ -5,6 +5,7 @@ export default function AuditorAgentPage() {
         <h2 className="text-6xl font-black text-white font-mono tracking-wider text-center">
           AUDITOR AGENT
         </h2>
+        <p className={'text-2xl text-center mt-10'}>Coming soon</p>
       </div>
     </div>
   );
