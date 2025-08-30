@@ -7,6 +7,7 @@ import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import { openAiRouter } from './routes/open-ai';
+import { weaviateRouter } from './routes/weaviate';
 
 const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3001;
 
@@ -19,6 +20,7 @@ const createApp = () => {
   app.use(express.json());
 
   app.use('/api/open-ai', openAiRouter);
+  app.use('/api/weaviate', weaviateRouter);
 
   return app;
 };
