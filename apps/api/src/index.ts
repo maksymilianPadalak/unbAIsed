@@ -1,23 +1,34 @@
+/**
+ * Main API Server
+ * Functional programming approach with modular structure
+ */
+
 import express from 'express';
 import cors from 'cors';
+import { openAiRouter } from './routes/open-ai';
 
-const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = 3001;
 
-// Middleware
-app.use(cors());
-app.use(express.json());
+// Create Express app with functional approach
+const createApp = () => {
+  const app = express();
 
-// Routes
-app.get('/', (req, res) => {
-  res.json({ message: 'Unbiased API Server' });
-});
+  // Middleware
+  app.use(cors());
+  app.use(express.json());
 
-app.get('/api/health', (req, res) => {
-  res.json({ status: 'healthy', timestamp: new Date().toISOString() });
-});
+  app.use('/api/open-ai', openAiRouter);
 
-// Start server
-app.listen(PORT, () => {
-  console.log(`🚀 API server running on http://localhost:${PORT}`);
-});
+  return app;
+};
+
+// Start server function
+const startServer = (app: express.Application, port: number) => {
+  app.listen(port, () => {
+    console.log(`🚀 API server running on http://localhost:${port}`);
+  });
+};
+
+// Initialize and start the application
+const app = createApp();
+startServer(app, PORT);
