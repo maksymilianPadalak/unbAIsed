@@ -4,10 +4,11 @@
  */
 
 import OpenAI from 'openai';
+import { CompanyEthics } from '../types/company-ethics';
 
 const client = new OpenAI();
 
-export const getUnbiasedScore = async (prompt: string): Promise<any> => {
+export const getUnbiasedScore = async (prompt: string): Promise<CompanyEthics> => {
   const response = await client.responses.create({
     model: 'gpt-5',
     input: prompt,
@@ -27,17 +28,23 @@ export const getUnbiasedScore = async (prompt: string): Promise<any> => {
     // Parse the JSON string from OpenAI response
     const parsedResponse = JSON.parse(response.output_text);
     
+    // Validate the response structure
+    if (!parsedResponse.name || !parsedResponse.description || 
+        typeof parsedResponse.ethicalScore !== 'number' || 
+        !Array.isArray(parsedResponse.usefulLinks)) {
+      throw new Error('Invalid response structure from OpenAI');
+    }
+    
     // Log the parsed object to console
     console.log('Parsed OpenAI Response:');
     console.log(JSON.stringify(parsedResponse, null, 2));
     
-    return parsedResponse;
+    return parsedResponse as CompanyEthics;
   } catch (parseError) {
     console.error('Failed to parse OpenAI response as JSON:', parseError);
     console.log('Raw response:', response.output_text);
     
-    // Return the raw text if parsing fails
-    return { error: 'Failed to parse response', rawResponse: response.output_text };
+    throw new Error(`OpenAI response parsing failed: ${parseError instanceof Error ? parseError.message : 'Unknown error'}`);
   }
 };
 

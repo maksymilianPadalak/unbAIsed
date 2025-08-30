@@ -8,6 +8,7 @@ import express from 'express';
 import cors from 'cors';
 import { openAiRouter } from './routes/open-ai';
 import { weaviateRouter } from './routes/weaviate';
+import { companyAnalysisRouter } from './routes/company-analysis';
 
 const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3001;
 
@@ -42,6 +43,7 @@ const createApp = () => {
 
   app.use('/api/open-ai', openAiRouter);
   app.use('/api/weaviate', weaviateRouter);
+  app.use('/api/company-analysis', companyAnalysisRouter);
 
   return app;
 };
