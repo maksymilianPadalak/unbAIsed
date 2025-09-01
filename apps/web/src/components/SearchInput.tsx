@@ -34,10 +34,10 @@ export default function SearchInput({
 
   return (
     <div className="w-full max-w-3xl mx-auto mb-8">
-      <div className="flex gap-4">
+      <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
         <div className="flex-1 relative">
-          <div className="brutalist-border bg-black p-4 flex items-center">
-            <Search className="w-6 h-6 text-white mr-4 flex-shrink-0" />
+          <div className="brutalist-border bg-black p-3 sm:p-4 flex items-center">
+            <Search className="w-5 h-5 sm:w-6 sm:h-6 text-white mr-3 sm:mr-4 flex-shrink-0" />
             <input
               type="text"
               value={query}
@@ -45,15 +45,15 @@ export default function SearchInput({
               onKeyPress={handleKeyPress}
               placeholder={placeholder}
               disabled={loading}
-              className="flex-1 bg-transparent text-white font-mono text-xl font-bold placeholder-gray-400 outline-none uppercase tracking-wider disabled:opacity-50"
+              className="flex-1 bg-transparent text-white font-mono text-lg sm:text-xl font-bold placeholder-gray-400 outline-none uppercase tracking-wider disabled:opacity-50"
             />
             {query && (
               <button
                 onClick={handleClear}
                 disabled={loading}
-                className="ml-4 p-1 hover:bg-white hover:text-black transition-colors duration-100 disabled:opacity-50"
+                className="ml-3 sm:ml-4 p-1 hover:bg-white hover:text-black transition-colors duration-100 disabled:opacity-50"
               >
-                <X className="w-6 h-6" />
+                <X className="w-5 h-5 sm:w-6 sm:h-6" />
               </button>
             )}
           </div>
@@ -61,15 +61,15 @@ export default function SearchInput({
         <button
           onClick={handleSearch}
           disabled={loading || !query.trim()}
-          className="brutalist-button min-w-[140px] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+          className="brutalist-button w-full sm:w-auto sm:min-w-[140px] px-6 py-4 sm:py-0 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
         >
           {loading ? (
             <div className="flex items-center">
               <div className="w-5 h-5 border-2 border-current border-t-transparent rounded-full animate-spin mr-2"></div>
-              SEARCHING...
+              <span className="text-sm sm:text-base font-black">SEARCHING...</span>
             </div>
           ) : (
-            'SEARCH'
+            <span className="text-sm sm:text-base font-black">SEARCH</span>
           )}
         </button>
       </div>

@@ -64,7 +64,7 @@ export default function SearchResults({
   // Research results state (show results from OpenAI)
   if (researchResults.length > 0) {
     return (
-      <div className="w-full max-w-4xl mx-auto">
+      <div className="w-full max-w-4xl lg:max-w-6xl xl:max-w-7xl 2xl:max-w-[100rem] mx-auto">
         <div className="mb-6">
           <h3 className="text-xl font-black font-mono text-white uppercase tracking-wider">
             RESEARCH COMPLETE - {researchResults.length} RESULT{researchResults.length !== 1 ? 'S' : ''}
@@ -101,7 +101,7 @@ export default function SearchResults({
   // Results state
   if (results.length > 0) {
     return (
-      <div className="w-full max-w-4xl mx-auto">
+      <div className="w-full max-w-4xl lg:max-w-6xl xl:max-w-7xl 2xl:max-w-[100rem] mx-auto">
         <div className="mb-6">
           <h3 className="text-xl font-black font-mono text-white uppercase tracking-wider">
             FOUND {results.length} RESULT{results.length !== 1 ? 'S' : ''}
