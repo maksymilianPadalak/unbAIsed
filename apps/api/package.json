@@ -2,7 +2,6 @@
   "name": "@unbiased/api",
   "version": "0.1.0",
   "private": true,
-  "type": "module",
   "scripts": {
     "dev": "tsx watch --clear-screen=false --ignore=dist --ignore=node_modules src/index.ts",
     "dev:fast": "tsx watch --clear-screen=false --ignore=dist --ignore=node_modules --no-cache src/index.ts",
