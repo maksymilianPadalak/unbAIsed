@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { CompanyEthics } from "../../../../types";
 import CompanyScoreCard from "./CompanyScoreCard";
+import { apiEndpoints } from "../lib/api-config";
 
 type SortOption = "highest" | "lowest" | null;
 
@@ -19,8 +20,8 @@ export default function CompanyScoresList() {
         setLoading(true);
         setError(null);
         
-        // Fetch from the API server running on port 3001
-        const response = await fetch('http://localhost:3001/api/weaviate/companies');
+        // Fetch from the API server
+        const response = await fetch(apiEndpoints.weaviate.companies);
         
         if (!response.ok) {
           throw new Error(`Failed to fetch companies: ${response.status}`);

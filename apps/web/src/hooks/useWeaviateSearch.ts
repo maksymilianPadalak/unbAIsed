@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react';
 import { CompanyEthics } from '../../../../types';
+import { apiEndpoints } from '../lib/api-config';
 
 interface SearchResponse {
   found: boolean;
@@ -20,7 +21,7 @@ export const useWeaviateSearch = () => {
     setResearching(true);
     
     try {
-      const response = await fetch('http://localhost:3001/api/open-ai', {
+      const response = await fetch(apiEndpoints.openai, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -58,7 +59,7 @@ export const useWeaviateSearch = () => {
     setResearchResults([]); // Clear previous research results
 
     try {
-      const response = await fetch('http://localhost:3001/api/weaviate/search', {
+      const response = await fetch(apiEndpoints.weaviate.search, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
