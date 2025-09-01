@@ -6,7 +6,7 @@ import CompanyCarousel from '../components/CompanyCarousel';
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-black">
+    <div className="h-full bg-black">
       {/* Hero Section - Moved higher up */}
       <div className="flex flex-col justify-center px-4 sm:px-8 pt-8 sm:pt-16">
         <div className="text-center w-full max-w-6xl mx-auto mb-12 sm:mb-16">
