@@ -14,6 +14,9 @@ body {
   background: #000;
   color: #fff;
   line-height: 1.2;
+  /* Smooth scrolling optimizations */
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
 }
 
 .brutalist-border {
