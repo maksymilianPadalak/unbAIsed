@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import StarryAI from '../components/StarryAI';
 
 export default function Home() {
   return (
@@ -8,7 +9,7 @@ export default function Home() {
         <div className="text-center">
           <div className="border-4 border-white p-16 mb-12 bg-black">
             <h1 className="text-8xl md:text-9xl font-black text-white font-mono tracking-wider mb-8">
-              UNBIASED
+              UNB<StarryAI />SED
             </h1>
             <div className="border-t-4 border-white pt-8">
               <p className="text-2xl font-bold text-white font-mono tracking-widest">

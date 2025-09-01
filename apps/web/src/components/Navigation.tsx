@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import StarryAI from "./StarryAI";
 
 const navigationItems = [
   {
@@ -27,7 +28,9 @@ export default function Navigation() {
         <div className="flex justify-between items-center h-20">
           <Link href="/" className="">
             <div className="border-4 border-white px-6 py-3 bg-black hover:bg-white hover:text-black transition-all duration-100">
-              <span className="font-mono text-xl font-black tracking-wider">UNBIASED</span>
+              <span className="font-mono text-xl font-black tracking-wider">
+                UNB<StarryAI />SED
+              </span>
             </div>
           </Link>
           

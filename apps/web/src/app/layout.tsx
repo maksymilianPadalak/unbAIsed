@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Unbiased",
-  description: "Unbiased web application",
+  title: "UnbAIsed",
+  description: "UnbAIsed web application",
 };
 
 export default function RootLayout({
