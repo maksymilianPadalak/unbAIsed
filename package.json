@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "turbo dev",
     "build": "turbo build",
-    "start": "pnpm start --filter=@unbiased/api",
+    "start": "cd apps/api && node dist/index.js",
     "lint": "turbo lint",
     "type-check": "turbo type-check",
     "format": "prettier --write .",
