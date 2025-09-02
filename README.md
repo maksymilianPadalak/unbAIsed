@@ -24,12 +24,15 @@ This will start:
 ### Api envs
 
 OPENAI_API_KEY=
+
 PORT=3001
+
 WEAVIATE_API_KEY=
 
 ### Web envs
 
 NEXT_PUBLIC_API_ADDRESS=http://localhost:3001/api (for development)
+
 NEXT_PUBLIC_SITE_URL=not needed, used for metadata
 
 
