@@ -51,8 +51,8 @@ export default function CompanyScoreCard({ company }: CompanyScoreCardProps) {
         </div>
 
         {/* Description */}
-        <div className="mb-6">
-          <p className="text-white font-mono leading-relaxed text-sm sm:text-lg">
+        <div className="mb-6 overflow-hidden">
+          <p className="text-white font-mono leading-relaxed text-sm sm:text-lg break-words max-w-full">
             {company.description}
           </p>
         </div>
@@ -108,8 +108,8 @@ export default function CompanyScoreCard({ company }: CompanyScoreCardProps) {
         </div>
 
         {/* Description */}
-        <div className="mb-8">
-          <p className="text-white font-mono leading-relaxed text-2xl">
+        <div className="mb-8 overflow-hidden">
+          <p className="text-white font-mono leading-relaxed text-2xl break-words max-w-full">
             {company.description}
           </p>
         </div>
