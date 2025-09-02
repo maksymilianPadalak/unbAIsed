@@ -9,7 +9,7 @@ export default function Home() {
     <div className="h-full bg-black">
       {/* Hero Section - Moved higher up */}
       <div className="flex flex-col justify-center px-4 sm:px-8 pt-4 sm:pt-16">
-        <div className="text-center w-full max-w-6xl mx-auto mb-12 sm:mb-16">
+        <div className="text-center w-full max-w-6xl mx-auto mb-4 sm:mb-8">
           <div className="border-4 border-white p-6 sm:p-12 lg:p-16 bg-black">
             <h1 className="text-4xl sm:text-6xl md:text-8xl lg:text-9xl font-black text-white font-mono tracking-wider mb-6 sm:mb-8">
               UNB
@@ -22,6 +22,13 @@ export default function Home() {
               </p>
             </div>
           </div>
+        </div>
+
+        <div className="text-center w-full max-w-6xl mx-auto mb-4 sm:mb-8">
+          <p className="text-white font-mono text-base sm:text-lg leading-relaxed opacity-90">
+            See companies’ Ethics Scores, based on GPT-5 research, with direct
+            links to sources.
+          </p>
         </div>
 
         {/* CTA: Research Company */}
