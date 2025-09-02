@@ -19,13 +19,15 @@ This will start:
 - Next.js app on [http://localhost:3000](http://localhost:3000)
 - Express API server on [http://localhost:3001](http://localhost:3001)
 
-## Api envs
+
+## Envs
+### Api envs
 
 OPENAI_API_KEY=
 PORT=3001
 WEAVIATE_API_KEY=
 
-##Web envs
+### Web envs
 
 NEXT_PUBLIC_API_ADDRESS=http://localhost:3001/api (for development)
 NEXT_PUBLIC_SITE_URL=not needed, used for metadata
