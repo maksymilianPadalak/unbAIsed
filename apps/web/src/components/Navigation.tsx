@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import StarryAI from './StarryAI';
 
@@ -24,6 +24,27 @@ const navigationItems = [
 export default function Navigation() {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const [menuHeight, setMenuHeight] = useState(0);
+
+  useEffect(() => {
+    if (!menuRef.current) return;
+    if (isMobileMenuOpen) {
+      setMenuHeight(menuRef.current.scrollHeight);
+    } else {
+      setMenuHeight(0);
+    }
+  }, [isMobileMenuOpen]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (menuRef.current && isMobileMenuOpen) {
+        setMenuHeight(menuRef.current.scrollHeight);
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [isMobileMenuOpen]);
 
   return (
     <nav className="bg-black border-b-4 border-white">
@@ -62,6 +83,8 @@ export default function Navigation() {
           <button
             className="lg:hidden border-4 border-white p-2 bg-black hover:bg-white hover:text-black transition-all duration-100"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            aria-expanded={isMobileMenuOpen}
+            aria-controls="mobile-menu"
           >
             {isMobileMenuOpen ? (
               <X className="w-6 h-6" />
@@ -72,28 +95,34 @@ export default function Navigation() {
         </div>
 
         {/* Mobile Menu */}
-        {isMobileMenuOpen && (
-          <div className="lg:hidden border-t-4 border-white bg-black py-4">
-            <div className="flex flex-col space-y-2">
-              {navigationItems.map((item) => {
-                const isActive = pathname === item.href;
+        <div
+          id="mobile-menu"
+          ref={menuRef}
+          aria-hidden={!isMobileMenuOpen}
+          className={`lg:hidden border-t-4 border-white bg-black overflow-hidden origin-top transform-gpu transition-[max-height,opacity,transform] duration-300 ease-in-out ${
+            isMobileMenuOpen ? 'opacity-100 scale-y-100' : 'opacity-0 scale-y-95 pointer-events-none'
+          }`}
+          style={{ maxHeight: isMobileMenuOpen ? menuHeight : 0 }}
+        >
+          <div className="flex flex-col space-y-1 py-2">
+            {navigationItems.map((item) => {
+              const isActive = pathname === item.href;
 
-                return (
-                  <Link
-                    key={item.name}
-                    href={item.href}
-                    className={`brutalist-button text-center py-4 ${
-                      isActive ? 'brutalist-active' : ''
-                    }`}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    {item.name}
-                  </Link>
-                );
-              })}
-            </div>
+              return (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className={`brutalist-button text-center ${
+                    isActive ? 'brutalist-active' : ''
+                  }`}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  {item.name}
+                </Link>
+              );
+            })}
           </div>
-        )}
+        </div>
       </div>
     </nav>
   );
