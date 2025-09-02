@@ -1,4 +1,4 @@
-# Unbiased
+# UnbAIsed
 
 A Turborepo monorepo with Next.js frontend and Express API server.
 
