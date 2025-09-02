@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import StarryAI from '../components/StarryAI';
 import CompanyCarousel from '../components/CompanyCarousel';
 
@@ -8,8 +9,8 @@ export default function Home() {
     <div className="h-full bg-black">
       {/* Hero Section - Moved higher up */}
       <div className="flex flex-col justify-center px-4 sm:px-8 pt-4 sm:pt-16">
-        <div className="text-center w-full max-w-6xl mx-auto mb-6 sm:mb-16">
-          <div className="border-4 border-white p-6 sm:p-12 lg:p-16 mb-8 sm:mb-12 bg-black">
+        <div className="text-center w-full max-w-6xl mx-auto mb-12 sm:mb-16">
+          <div className="border-4 border-white p-6 sm:p-12 lg:p-16 bg-black">
             <h1 className="text-4xl sm:text-6xl md:text-8xl lg:text-9xl font-black text-white font-mono tracking-wider mb-6 sm:mb-8">
               UNB
               <StarryAI />
@@ -21,6 +22,17 @@ export default function Home() {
               </p>
             </div>
           </div>
+        </div>
+
+        {/* CTA: Research Company */}
+        <div className="flex justify-center mb-12 sm:mb-16">
+          <Link href="/search">
+            <div className="brutalist-button text-center py-4 px-6 hover:scale-105 transform transition-all duration-100">
+              <span className="text-lg sm:text-xl md:text-2xl font-black">
+                RESEARCH ANY COMPANY
+              </span>
+            </div>
+          </Link>
         </div>
 
         {/* Company Carousel (header hidden to save space) */}
