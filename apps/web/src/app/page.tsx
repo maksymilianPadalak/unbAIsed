@@ -27,7 +27,7 @@ export default function Home() {
         <div className="text-center w-full max-w-6xl mx-auto mb-4 sm:mb-8">
           <p className="text-white font-mono text-base sm:text-lg leading-relaxed opacity-90">
             See companies’ Ethics Scores, based on GPT-5 research, with direct
-            links to sources.
+            links to sources
           </p>
         </div>
 
