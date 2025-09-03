@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Github } from 'lucide-react';
 import StarryAI from './StarryAI';
 
 const navigationItems = [
@@ -18,6 +18,10 @@ const navigationItems = [
   {
     name: 'AUDITOR AGENT',
     href: '/auditor-agent',
+  },
+  {
+    name: 'OUR MISSION',
+    href: '/our-mission',
   },
 ];
 
@@ -50,15 +54,26 @@ export default function Navigation() {
     <nav className="bg-black border-b-4 border-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-8">
         <div className="flex justify-between items-center h-20">
-          <Link href="/" className="">
-            <div className="border-4 border-white px-3 sm:px-6 py-2 sm:py-3 bg-black hover:bg-white hover:text-black transition-all duration-100">
-              <span className="font-mono text-lg sm:text-xl font-black tracking-wider">
-                UNB
-                <StarryAI />
-                SED
-              </span>
-            </div>
-          </Link>
+          <div className="flex items-center space-x-2">
+            <Link href="/" className="">
+              <div className="border-4 border-white px-3 sm:px-6 h-12 sm:h-14 flex items-center bg-black hover:bg-white hover:text-black transition-all duration-100">
+                <span className="font-mono text-lg sm:text-xl font-black tracking-wider">
+                  UNB
+                  <StarryAI />
+                  SED
+                </span>
+              </div>
+            </Link>
+            <a
+              href="https://github.com/maksymilianPadalak/unbAIsed"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Open-source on GitHub"
+              className="border-4 border-white h-12 sm:h-14 w-12 sm:w-14 bg-black hover:bg-white hover:text-black transition-all duration-100 inline-flex items-center justify-center"
+            >
+              <Github className="w-6 h-6" />
+            </a>
+          </div>
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center space-x-2">

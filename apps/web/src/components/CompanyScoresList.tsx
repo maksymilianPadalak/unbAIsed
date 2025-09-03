@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { CompanyEthics } from "../../../../types";
 import CompanyScoreCard from "./CompanyScoreCard";
 import { apiEndpoints } from "../lib/api-config";
@@ -153,9 +154,19 @@ export default function CompanyScoresList() {
 
         {/* Company Cards Grid */}
         <div className="grid gap-6 grid-cols-1">
-          {companies.map((company, index) => (
-            <CompanyScoreCard key={index} company={company} />
-          ))}
+          {companies.map((company, index) => {
+            const companySlug = company.name
+              .toLowerCase()
+              .replace(/[^a-z0-9]/g, '-')
+              .replace(/-+/g, '-')
+              .replace(/^-|-$/g, '');
+
+            return (
+              <Link key={index} href={`/company/${companySlug}`} className="block hover:scale-[1.01] transition-transform duration-100">
+                <CompanyScoreCard company={company} showLinks={false} />
+              </Link>
+            );
+          })}
         </div>
       </div>
     </div>

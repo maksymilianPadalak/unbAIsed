@@ -3,9 +3,10 @@ import { ExternalLink } from 'lucide-react';
 
 interface CompanyScoreCardProps {
   company: CompanyEthics;
+  showLinks?: boolean;
 }
 
-export default function CompanyScoreCard({ company }: CompanyScoreCardProps) {
+export default function CompanyScoreCard({ company, showLinks = true }: CompanyScoreCardProps) {
   const getScoreColor = (score: number): string => {
     if (score >= 8) return 'text-green-400';
     if (score >= 6) return 'text-yellow-400';
@@ -58,7 +59,7 @@ export default function CompanyScoreCard({ company }: CompanyScoreCardProps) {
         </div>
 
         {/* Useful Links */}
-        {company.usefulLinks && company.usefulLinks.length > 0 && (
+        {showLinks && company.usefulLinks && company.usefulLinks.length > 0 && (
           <div>
             <h4 className="text-white font-black font-mono text-sm sm:text-lg mb-3 uppercase tracking-wide">
               RESEARCH LINKS:
@@ -115,7 +116,7 @@ export default function CompanyScoreCard({ company }: CompanyScoreCardProps) {
         </div>
 
         {/* Links in Multiple Columns */}
-        {company.usefulLinks && company.usefulLinks.length > 0 && (
+        {showLinks && company.usefulLinks && company.usefulLinks.length > 0 && (
           <div>
             <h4 className="text-white font-black font-mono text-2xl mb-6 uppercase tracking-wide">
               RESEARCH LINKS:
