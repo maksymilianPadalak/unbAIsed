@@ -20,6 +20,19 @@ export default function CompanyCarousel({ companies }: CompanyCarouselProps) {
     [Autoplay({ delay: 2000, stopOnInteraction: false })]
   );
 
+  // Shuffle function to randomize company order
+  const shuffleArray = <T,>(array: T[]): T[] => {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+  };
+
+  // Randomize the order of companies each time
+  const shuffledCompanies = shuffleArray(companies);
+
   const getScoreColor = (score: number): string => {
     if (score >= 8) return 'text-green-400 score-green';
     if (score >= 6) return 'text-yellow-400 score-yellow';
@@ -31,7 +44,7 @@ export default function CompanyCarousel({ companies }: CompanyCarouselProps) {
     <div className="w-full mb-16">
       <div className="embla" ref={emblaRef}>
         <div className="embla__container">
-          {companies.map((company, index) => {
+          {shuffledCompanies.map((company, index) => {
             const companySlug = company.name
               .toLowerCase()
               .replace(/[^a-z0-9]/g, '-')
