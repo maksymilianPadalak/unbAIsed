@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { ArrowLeft, ExternalLink } from 'lucide-react';
 import { CompanyEthics } from '../../../../../../types';
 import { apiEndpoints } from '../../../lib/api-config';
+import BrutalistMarkdown from '../../../components/BrutalistMarkdown';
 
 export default function CompanyPage() {
   const params = useParams();
@@ -171,9 +172,9 @@ export default function CompanyPage() {
               <h2 className="text-2xl sm:text-3xl font-black text-white font-mono tracking-wider mb-6 uppercase">
                 SCORE RATIONALE
               </h2>
-              <p className="text-white font-mono leading-relaxed text-lg sm:text-xl opacity-90">
+              <BrutalistMarkdown className="text-white text-lg sm:text-xl opacity-90">
                 {company.scoreRationale}
-              </p>
+              </BrutalistMarkdown>
             </div>
           </div>
         )}

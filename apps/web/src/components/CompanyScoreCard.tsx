@@ -1,12 +1,14 @@
 import { CompanyEthics } from '../../../../types';
 import { ExternalLink } from 'lucide-react';
-
 interface CompanyScoreCardProps {
   company: CompanyEthics;
   showLinks?: boolean;
 }
 
-export default function CompanyScoreCard({ company, showLinks = true }: CompanyScoreCardProps) {
+export default function CompanyScoreCard({
+  company,
+  showLinks = true,
+}: CompanyScoreCardProps) {
   const getScoreColor = (score: number): string => {
     if (score >= 8) return 'text-green-400';
     if (score >= 6) return 'text-yellow-400';
@@ -21,12 +23,23 @@ export default function CompanyScoreCard({ company, showLinks = true }: CompanyS
     return 'TERRIBLE';
   };
 
-  const hasSplitLinks = (company.goodImpactArticles && company.goodImpactArticles.length > 0) ||
+  const hasSplitLinks =
+    (company.goodImpactArticles && company.goodImpactArticles.length > 0) ||
     (company.badImpactArticles && company.badImpactArticles.length > 0);
 
-  const LinkList = ({ title, links, small }: { title: string; links: NonNullable<CompanyEthics['goodImpactArticles']>; small?: boolean }) => (
+  const LinkList = ({
+    title,
+    links,
+    small,
+  }: {
+    title: string;
+    links: NonNullable<CompanyEthics['goodImpactArticles']>;
+    small?: boolean;
+  }) => (
     <div>
-      <h4 className={`text-white font-black font-mono ${small ? 'text-sm sm:text-lg' : 'text-2xl'} mb-3 uppercase tracking-wide`}>
+      <h4
+        className={`text-white font-black font-mono ${small ? 'text-sm sm:text-lg' : 'text-2xl'} mb-3 uppercase tracking-wide`}
+      >
         {title}
       </h4>
       <div className="grid gap-2">
@@ -38,10 +51,14 @@ export default function CompanyScoreCard({ company, showLinks = true }: CompanyS
             rel="noopener noreferrer"
             className={`brutalist-button text-left ${small ? 'px-3 py-2' : 'px-4 py-4'} flex items-start justify-between group hover:scale-[1.02] transition-all duration-100`}
           >
-            <span className={`font-mono ${small ? 'text-xs sm:text-sm' : 'text-lg'} font-bold mr-2 leading-tight`}>
+            <span
+              className={`font-mono ${small ? 'text-xs sm:text-sm' : 'text-lg'} font-bold mr-2 leading-tight`}
+            >
               {link.description}
             </span>
-            <ExternalLink className={`${small ? 'w-4 h-4' : 'w-5 h-5'} flex-shrink-0 mt-0.5 group-hover:scale-110 transition-transform`} />
+            <ExternalLink
+              className={`${small ? 'w-4 h-4' : 'w-5 h-5'} flex-shrink-0 mt-0.5 group-hover:scale-110 transition-transform`}
+            />
           </a>
         ))}
       </div>
@@ -85,26 +102,25 @@ export default function CompanyScoreCard({ company, showLinks = true }: CompanyS
           </p>
         </div>
 
-        {company.scoreRationale && (
-          <div className="mb-6 overflow-hidden">
-            <h4 className="text-white font-black font-mono text-sm sm:text-lg mb-2 uppercase tracking-wide">
-              SCORE RATIONALE:
-            </h4>
-            <p className="text-white font-mono leading-relaxed text-sm sm:text-base break-words max-w-full opacity-90">
-              {company.scoreRationale}
-            </p>
-          </div>
-        )}
-
         {showLinks && hasSplitLinks && (
-            <div className="space-y-4">
-              {company.goodImpactArticles && company.goodImpactArticles.length > 0 && (
-                <LinkList title="POSITIVE IMPACT ARTICLES:" links={company.goodImpactArticles} small />
+          <div className="space-y-4">
+            {company.goodImpactArticles &&
+              company.goodImpactArticles.length > 0 && (
+                <LinkList
+                  title="POSITIVE IMPACT ARTICLES:"
+                  links={company.goodImpactArticles}
+                  small
+                />
               )}
-              {company.badImpactArticles && company.badImpactArticles.length > 0 && (
-                <LinkList title="NEGATIVE IMPACT ARTICLES:" links={company.badImpactArticles} small />
+            {company.badImpactArticles &&
+              company.badImpactArticles.length > 0 && (
+                <LinkList
+                  title="NEGATIVE IMPACT ARTICLES:"
+                  links={company.badImpactArticles}
+                  small
+                />
               )}
-            </div>
+          </div>
         )}
       </div>
 
@@ -139,27 +155,23 @@ export default function CompanyScoreCard({ company, showLinks = true }: CompanyS
           </p>
         </div>
 
-        {/* Score Rationale */}
-        {company.scoreRationale && (
-          <div className="mb-8 overflow-hidden">
-            <h4 className="text-white font-black font-mono text-2xl mb-3 uppercase tracking-wide">
-              SCORE RATIONALE:
-            </h4>
-            <p className="text-white font-mono leading-relaxed text-xl break-words max-w-full opacity-90">
-              {company.scoreRationale}
-            </p>
-          </div>
-        )}
-
         {showLinks && hasSplitLinks && (
-            <div className="space-y-6">
-              {company.goodImpactArticles && company.goodImpactArticles.length > 0 && (
-                <LinkList title="POSITIVE IMPACT ARTICLES:" links={company.goodImpactArticles} />
+          <div className="space-y-6">
+            {company.goodImpactArticles &&
+              company.goodImpactArticles.length > 0 && (
+                <LinkList
+                  title="POSITIVE IMPACT ARTICLES:"
+                  links={company.goodImpactArticles}
+                />
               )}
-              {company.badImpactArticles && company.badImpactArticles.length > 0 && (
-                <LinkList title="NEGATIVE IMPACT ARTICLES:" links={company.badImpactArticles} />
+            {company.badImpactArticles &&
+              company.badImpactArticles.length > 0 && (
+                <LinkList
+                  title="NEGATIVE IMPACT ARTICLES:"
+                  links={company.badImpactArticles}
+                />
               )}
-            </div>
+          </div>
         )}
       </div>
     </div>
