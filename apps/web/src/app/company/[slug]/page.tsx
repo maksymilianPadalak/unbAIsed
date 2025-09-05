@@ -233,10 +233,10 @@ export default function CompanyPage() {
         )}
 
         {/* Action Buttons */}
-        <div className="text-center space-y-4 sm:space-y-0 sm:space-x-4 sm:flex sm:justify-center">
+        <div className="flex flex-col space-y-4 lg:flex-row lg:space-y-0 lg:space-x-4 lg:justify-center">
           <Link
             href="/company-scores"
-            className="brutalist-button px-6 py-3 inline-block"
+            className="brutalist-button px-6 py-3 w-full lg:w-auto text-center"
           >
             <span className="font-mono font-bold text-base sm:text-lg">
               VIEW ALL COMPANIES
@@ -244,7 +244,7 @@ export default function CompanyPage() {
           </Link>
           <Link
             href="/search"
-            className="brutalist-button px-6 py-3 inline-block"
+            className="brutalist-button px-6 py-3 w-full lg:w-auto text-center"
           >
             <span className="font-mono font-bold text-base sm:text-lg">
               SEARCH MORE
