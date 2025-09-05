@@ -3,11 +3,15 @@ import { ExternalLink } from 'lucide-react';
 interface CompanyScoreCardProps {
   company: CompanyEthics;
   showLinks?: boolean;
+  disableHover?: boolean;
+  showReasoning?: boolean;
 }
 
 export default function CompanyScoreCard({
   company,
   showLinks = true,
+  disableHover = false,
+  showReasoning = true,
 }: CompanyScoreCardProps) {
   const getScoreColor = (score: number): string => {
     if (score >= 8) return 'text-green-400';
@@ -73,7 +77,7 @@ export default function CompanyScoreCard({
   };
 
   return (
-    <div className="brutalist-border bg-black p-4 sm:p-6 mb-6 hover:bg-gray-900 transition-all duration-100">
+    <div className={`brutalist-border bg-black p-4 sm:p-6 mb-6 ${!disableHover ? 'hover:bg-gray-900 transition-all duration-100' : ''}`}>
       {/* Mobile Layout */}
       <div className="block lg:hidden">
         {/* Company Header */}
@@ -108,6 +112,18 @@ export default function CompanyScoreCard({
             {company.description}
           </p>
         </div>
+
+        {/* Reasoning / Rationale */}
+        {showReasoning && company.scoreRationale && (
+          <div className="mb-4">
+            <h4 className="text-white font-black font-mono text-sm sm:text-lg uppercase tracking-wide mb-2">
+              REASONING
+            </h4>
+            <p className="text-white font-mono leading-relaxed text-sm sm:text-lg break-words max-w-full opacity-90">
+              {company.scoreRationale}
+            </p>
+          </div>
+        )}
 
         {showLinks && hasSplitLinks && (
           <div className="space-y-4">
@@ -163,6 +179,18 @@ export default function CompanyScoreCard({
             {company.description}
           </p>
         </div>
+
+        {/* Reasoning / Rationale */}
+        {showReasoning && company.scoreRationale && (
+          <div className="mb-8">
+            <h4 className="text-white font-black font-mono text-2xl uppercase tracking-wide mb-3">
+              REASONING
+            </h4>
+            <p className="text-white font-mono leading-relaxed text-2xl break-words max-w-full opacity-90">
+              {company.scoreRationale}
+            </p>
+          </div>
+        )}
 
         {showLinks && hasSplitLinks && (
           <div className="space-y-6">

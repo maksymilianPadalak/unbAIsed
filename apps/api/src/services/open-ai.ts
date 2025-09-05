@@ -23,7 +23,7 @@ export const getUnbiasedScore = async (
     '- Classify sources as goodImpactArticles (evidence of positive/ethical behavior) or badImpactArticles (evidence of negative/unethical behavior).',
     '- For each source, add a short description. If available, include the publication date (ISO or YYYY-MM-DD).',
     '- Include at most 20 total sources across good and bad articles; skip dead or inaccessible links.',
-    '- The description should describe what the company does, neutrally. No links!',
+    '- The description should describe what the company does, neutrally. No links here!',
     '- The scoreRationale must mention both the positive drivers and the strongest drivers of the score.',
     "- Don' make any rumors affect the score, just verified info.",
     '- Output strictly valid JSON. Do NOT include markdown, commentary, or extra text.',
@@ -32,6 +32,7 @@ export const getUnbiasedScore = async (
   const response = await client.responses.create({
     model: 'gpt-5',
     input: prompt,
+    reasoning: { effort: 'high', summary: 'detailed' },
     tools: [{ type: 'web_search' }],
     instructions,
   });

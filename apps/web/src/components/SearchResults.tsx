@@ -75,7 +75,7 @@ export default function SearchResults({
         </div>
         <div className="space-y-0">
           {researchResults.map((company, index) => (
-            <CompanyScoreCard key={`research-${company.name}-${index}`} company={company} />
+            <CompanyScoreCard key={`research-${company.name}-${index}`} company={company} disableHover={true} />
           ))}
         </div>
       </div>
@@ -109,7 +109,7 @@ export default function SearchResults({
         </div>
         <div className="space-y-0">
           {results.map((company, index) => (
-            <CompanyScoreCard key={`${company.name}-${index}`} company={company} />
+            <CompanyScoreCard key={`${company.name}-${index}`} company={company} disableHover={true} />
           ))}
         </div>
       </div>

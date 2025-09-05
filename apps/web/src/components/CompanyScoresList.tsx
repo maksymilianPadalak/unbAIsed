@@ -163,7 +163,7 @@ export default function CompanyScoresList() {
 
             return (
               <Link key={index} href={`/company/${companySlug}`} className="block hover:scale-[1.01] transition-transform duration-100">
-                <CompanyScoreCard company={company} showLinks={false} />
+                <CompanyScoreCard company={company} showLinks={false} showReasoning={false} />
               </Link>
             );
           })}
