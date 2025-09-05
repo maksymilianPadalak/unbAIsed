@@ -184,7 +184,7 @@ export default function CompanyPage() {
             {company.goodImpactArticles &&
               company.goodImpactArticles.length > 0 && (
                 <div className="border-4 border-white p-6 sm:p-8 bg-black">
-                  <h2 className="text-2xl sm:text-3xl font-black text-white font-mono tracking-wider mb-6 uppercase">
+                  <h2 className="text-2xl sm:text-3xl font-black text-green-400 font-mono tracking-wider mb-6 uppercase">
                     POSITIVE IMPACT ARTICLES
                   </h2>
                   <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
@@ -194,7 +194,7 @@ export default function CompanyPage() {
                         href={link.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="brutalist-button text-left px-4 py-4 flex items-start justify-between group hover:scale-[1.02] transition-all duration-100"
+                        className="brutalist-button text-left px-4 py-4 flex items-start justify-between group hover:scale-[1.02] hover:shadow-2xl transition-all duration-200"
                       >
                         <span className="font-mono text-sm sm:text-base font-bold mr-3 leading-tight">
                           {link.description}
@@ -208,7 +208,7 @@ export default function CompanyPage() {
             {company.badImpactArticles &&
               company.badImpactArticles.length > 0 && (
                 <div className="border-4 border-white p-6 sm:p-8 bg-black">
-                  <h2 className="text-2xl sm:text-3xl font-black text-white font-mono tracking-wider mb-6 uppercase">
+                  <h2 className="text-2xl sm:text-3xl font-black text-red-400 font-mono tracking-wider mb-6 uppercase">
                     NEGATIVE IMPACT ARTICLES
                   </h2>
                   <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
@@ -218,7 +218,7 @@ export default function CompanyPage() {
                         href={link.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="brutalist-button text-left px-4 py-4 flex items-start justify-between group hover:scale-[1.02] transition-all duration-100"
+                        className="brutalist-button text-left px-4 py-4 flex items-start justify-between group hover:scale-[1.02] hover:shadow-2xl transition-all duration-200"
                       >
                         <span className="font-mono text-sm sm:text-base font-bold mr-3 leading-tight">
                           {link.description}

@@ -31,39 +31,46 @@ export default function CompanyScoreCard({
     title,
     links,
     small,
+    isPositive,
   }: {
     title: string;
     links: NonNullable<CompanyEthics['goodImpactArticles']>;
     small?: boolean;
-  }) => (
-    <div>
-      <h4
-        className={`text-white font-black font-mono ${small ? 'text-sm sm:text-lg' : 'text-2xl'} mb-3 uppercase tracking-wide`}
-      >
-        {title}
-      </h4>
-      <div className="grid gap-2">
-        {links.map((link, index) => (
-          <a
-            key={`${title}-${index}`}
-            href={link.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={`brutalist-button text-left ${small ? 'px-3 py-2' : 'px-4 py-4'} flex items-start justify-between group hover:scale-[1.02] transition-all duration-100`}
-          >
-            <span
-              className={`font-mono ${small ? 'text-xs sm:text-sm' : 'text-lg'} font-bold mr-2 leading-tight`}
+    isPositive?: boolean;
+  }) => {
+    const titleColor = isPositive ? 'text-green-400' : 'text-red-400';
+    const shadowHover = isPositive ? 'hover:shadow-2xl hover:shadow-green-500/30' : 'hover:shadow-2xl hover:shadow-red-500/30';
+    
+    return (
+      <div>
+        <h4
+          className={`${titleColor} font-black font-mono ${small ? 'text-sm sm:text-lg' : 'text-2xl'} mb-3 uppercase tracking-wide`}
+        >
+          {title}
+        </h4>
+        <div className="grid gap-2">
+          {links.map((link, index) => (
+            <a
+              key={`${title}-${index}`}
+              href={link.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`brutalist-button text-left ${small ? 'px-3 py-2' : 'px-4 py-4'} flex items-start justify-between group hover:scale-[1.02] ${shadowHover} transition-all duration-200`}
             >
-              {link.description}
-            </span>
-            <ExternalLink
-              className={`${small ? 'w-4 h-4' : 'w-5 h-5'} flex-shrink-0 mt-0.5 group-hover:scale-110 transition-transform`}
-            />
-          </a>
-        ))}
+              <span
+                className={`font-mono ${small ? 'text-xs sm:text-sm' : 'text-lg'} font-bold mr-2 leading-tight`}
+              >
+                {link.description}
+              </span>
+              <ExternalLink
+                className={`${small ? 'w-4 h-4' : 'w-5 h-5'} flex-shrink-0 mt-0.5 group-hover:scale-110 transition-transform`}
+              />
+            </a>
+          ))}
+        </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   return (
     <div className="brutalist-border bg-black p-4 sm:p-6 mb-6 hover:bg-gray-900 transition-all duration-100">
@@ -110,6 +117,7 @@ export default function CompanyScoreCard({
                   title="POSITIVE IMPACT ARTICLES:"
                   links={company.goodImpactArticles}
                   small
+                  isPositive={true}
                 />
               )}
             {company.badImpactArticles &&
@@ -118,6 +126,7 @@ export default function CompanyScoreCard({
                   title="NEGATIVE IMPACT ARTICLES:"
                   links={company.badImpactArticles}
                   small
+                  isPositive={false}
                 />
               )}
           </div>
@@ -162,6 +171,7 @@ export default function CompanyScoreCard({
                 <LinkList
                   title="POSITIVE IMPACT ARTICLES:"
                   links={company.goodImpactArticles}
+                  isPositive={true}
                 />
               )}
             {company.badImpactArticles &&
@@ -169,6 +179,7 @@ export default function CompanyScoreCard({
                 <LinkList
                   title="NEGATIVE IMPACT ARTICLES:"
                   links={company.badImpactArticles}
+                  isPositive={false}
                 />
               )}
           </div>

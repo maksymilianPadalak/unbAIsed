@@ -25,6 +25,7 @@ export const getUnbiasedScore = async (
     '- Include at most 20 total sources across good and bad articles; skip dead or inaccessible links.',
     '- The description should describe what the company does, neutrally. No links!',
     '- The scoreRationale must mention both the positive drivers and the strongest drivers of the score.',
+    "- Don' make any rumors affect the score, just verified info.",
     '- Output strictly valid JSON. Do NOT include markdown, commentary, or extra text.',
   ].join('\n');
 
@@ -67,14 +68,14 @@ export const getUnbiasedScore = async (
     const goodNorm = good.map(normalizeLink).filter(Boolean) as UsefulLink[];
     const badNorm = bad.map(normalizeLink).filter(Boolean) as UsefulLink[];
 
-
     const cap = 20;
     const seen = new Set<string>();
-    const dedup = (arr: UsefulLink[]) => arr.filter((l) => {
-      if (seen.has(l.url)) return false;
-      seen.add(l.url);
-      return true;
-    });
+    const dedup = (arr: UsefulLink[]) =>
+      arr.filter((l) => {
+        if (seen.has(l.url)) return false;
+        seen.add(l.url);
+        return true;
+      });
     const goodDedup = dedup(goodNorm);
     const spaceLeft = Math.max(0, cap - goodDedup.length);
     const badDedup = dedup(badNorm).slice(0, spaceLeft);
@@ -83,7 +84,10 @@ export const getUnbiasedScore = async (
       name: parsed.name,
       description: parsed.description,
       ethicalScore: parsed.ethicalScore,
-      scoreRationale: typeof parsed.scoreRationale === 'string' ? parsed.scoreRationale : undefined,
+      scoreRationale:
+        typeof parsed.scoreRationale === 'string'
+          ? parsed.scoreRationale
+          : undefined,
       goodImpactArticles: goodDedup.slice(0, cap),
       badImpactArticles: badDedup,
     };
