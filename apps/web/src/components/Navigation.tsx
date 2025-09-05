@@ -20,7 +20,7 @@ const navigationItems = [
     href: '/auditor-agent',
   },
   {
-    name: 'OUR MISSION',
+    name: 'MISSION',
     href: '/our-mission',
   },
 ];
