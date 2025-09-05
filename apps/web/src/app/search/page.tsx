@@ -7,7 +7,8 @@ import SearchResults from '../../components/SearchResults';
 
 export default function SearchPage() {
   const { 
-    search, 
+    search,
+    performResearch,
     loading, 
     researching, 
     results, 
@@ -38,7 +39,10 @@ export default function SearchPage() {
         {/* Search Input */}
         <SearchInput 
           onSearch={handleSearch}
+          onStartResearch={(q) => { setHasSearched(true); performResearch(q); }}
           loading={loading || researching}
+          researching={researching}
+          showResearchCta={hasSearched && !loading && !researching}
           placeholder="SEARCH COMPANIES..."
         />
 

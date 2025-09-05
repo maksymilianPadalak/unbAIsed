@@ -5,14 +5,20 @@ import { Search, X } from 'lucide-react';
 
 interface SearchInputProps {
   onSearch: (query: string) => void;
+  onStartResearch?: (query: string) => void;
   loading?: boolean;
+  researching?: boolean;
+  showResearchCta?: boolean; // show CTA only after search is done
   placeholder?: string;
 }
 
-export default function SearchInput({ 
-  onSearch, 
-  loading = false, 
-  placeholder = "SEARCH COMPANIES..." 
+export default function SearchInput({
+  onSearch,
+  onStartResearch,
+  loading = false,
+  researching = false,
+  showResearchCta = false,
+  placeholder = 'SEARCH COMPANIES...',
 }: SearchInputProps) {
   const [query, setQuery] = useState('');
 
@@ -66,13 +72,51 @@ export default function SearchInput({
           {loading ? (
             <div className="flex items-center">
               <div className="w-5 h-5 border-2 border-current border-t-transparent rounded-full animate-spin mr-2"></div>
-              <span className="text-sm sm:text-base font-black">SEARCHING...</span>
+              <span className="text-sm sm:text-base font-black">
+                SEARCHING...
+              </span>
             </div>
           ) : (
             <span className="text-sm sm:text-base font-black">SEARCH</span>
           )}
         </button>
       </div>
+
+      {/* Manual AI research CTA (only after a search completes) */}
+      {showResearchCta && (
+        <div className="mt-8 flex flex-col items-center gap-2 text-center">
+          <span className="text-sm font-mono text-white/80">
+            Not the result you wanted?
+          </span>
+          <button
+            type="button"
+            onClick={() =>
+              onStartResearch && query.trim() && onStartResearch(query.trim())
+            }
+            disabled={loading || researching || !query.trim()}
+            className="relative overflow-hidden border-2 border-white px-6 sm:px-8 py-4 text-white font-black font-mono uppercase tracking-wider text-base sm:text-lg min-w-[300px] disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white hover:text-black hover:scale-105 transition-all duration-200 transform hover:cursor-pointer"
+            aria-label="Start AI research"
+          >
+            {/* Starry background layers (same style as research animation) */}
+            <span className="absolute inset-0 opacity-30 pointer-events-none">
+              {Array.from({ length: 30 }).map((_, i) => (
+                <span
+                  key={`star-${i}`}
+                  className="absolute w-1 h-1 bg-white rounded-full animate-pulse"
+                  style={{
+                    left: `${Math.random() * 100}%`,
+                    top: `${Math.random() * 100}%`,
+                    animationDelay: `${Math.random() * 3}s`,
+                    animationDuration: `${2 + Math.random() * 2}s`,
+                  }}
+                />
+              ))}
+              <span className="absolute inset-0 bg-gradient-radial from-purple-600/10 via-transparent to-transparent animate-pulse" />
+            </span>
+            <span className="relative z-10">Start AI research</span>
+          </button>
+        </div>
+      )}
     </div>
   );
 }
