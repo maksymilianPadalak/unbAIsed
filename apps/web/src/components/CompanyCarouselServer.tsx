@@ -1,15 +1,15 @@
 import Link from 'next/link';
 import { CompanyEthics } from '../../../../types';
-import CompanyCarouselClient from './CompanyCarouselClient';
+import CompanyCarousel from './CompanyCarousel';
 
 // Fetch companies on the server for ISR
 async function getCompanies(): Promise<CompanyEthics[]> {
   try {
-    console.log('🔄 [ISR] Fetching companies for carousel...');
+    console.log('🎠 [ISR] Fetching selected companies for carousel...');
     
     // Use the full URL for server-side fetching
     const apiUrl = process.env.NEXT_PUBLIC_API_ADDRESS || 'http://localhost:3001';
-    const response = await fetch(`${apiUrl}/api/weaviate/companies`, {
+    const response = await fetch(`${apiUrl}/api/weaviate/companies/selected`, {
       next: { revalidate: 300 }, // Revalidate every 5 minutes (ISR)
     });
 
@@ -48,5 +48,5 @@ export default async function CompanyCarouselServer() {
     );
   }
 
-  return <CompanyCarouselClient companies={companies} />;
+  return <CompanyCarousel companies={companies} />;
 }

@@ -79,7 +79,7 @@ const getAllCompanies = async (): Promise<any[]> => {
     const result = await WeaviateClient.graphql
       .get()
       .withClassName('CompanyEthics')
-.withFields('name description ethicalScore reasoning goodImpactArticles { description url date } badImpactArticles { description url date }')
+      .withFields('name description ethicalScore reasoning goodImpactArticles { description url date } badImpactArticles { description url date } _additional { id }')
       .withLimit(100) // Set a reasonable limit
       .do();
     
@@ -365,6 +365,59 @@ const searchCompanyByName = async (companyName: string): Promise<CompanyEthics |
   return await findCompanyByNameFuzzy(companyName);
 };
 
+// Hardcoded list of selected companies for carousel
+const SELECTED_COMPANY_IDS = [
+  '13504130-e4a7-40d0-817d-3ae2b9209e44', // Upvest
+  '15635edd-a724-4b09-a9a5-2e0b59e43f95', // OpenAI
+  '16335ba9-35d4-4796-80ae-47e97caa8fba', // Google (Alphabet Inc.)
+  '24f92594-5c34-4df1-a594-2df6da841f28', // telli (telli technologies GmbH)
+  '352fcb49-85a0-4c8b-9464-1e7fa8f92328', // Weaviate
+  '49d833d4-005e-4fe7-9ca5-9cb124bf6f96', // Philip Morris International
+  '6dab86ae-bfe9-4af5-b60d-b9b212395620', // Nord Security
+  '78196e12-1beb-4a5a-a4e7-1f70661fac54', // Twitter (X)
+  '936b4ee8-034e-4282-910b-12f31ba9656b', // Patagonia
+  '9d84603f-6651-4bda-9237-e7f9744afa1d', // Uber Technologies, Inc.
+];
+
+// Get only the selected companies for carousel
+const getSelectedCompanies = async (): Promise<any[]> => {
+  try {
+    console.log(`🎠 Getting selected companies for carousel...`);
+    
+    const result = await WeaviateClient.graphql
+      .get()
+      .withClassName('CompanyEthics')
+      .withWhere({
+        operator: 'Or',
+        operands: SELECTED_COMPANY_IDS.map(id => ({
+          path: ['id'],
+          operator: 'Equal',
+          valueText: id
+        }))
+      })
+      .withFields('name description ethicalScore reasoning goodImpactArticles { description url date } badImpactArticles { description url date } _additional { id }')
+      .withLimit(10)
+      .do();
+    
+    const companies = result?.data?.Get?.CompanyEthics;
+    
+    if (companies && companies.length > 0) {
+      console.log(`✅ Found ${companies.length} selected companies for carousel`);
+      // Sort by ethics score descending to show the best companies first
+      return companies.sort((a: any, b: any) => b.ethicalScore - a.ethicalScore);
+    } else {
+      console.log(`⚠️  No selected companies found for carousel, falling back to all companies`);
+      // Fallback to all companies if the specific query fails
+      return getAllCompanies();
+    }
+  } catch (error) {
+    console.error('Error getting selected companies:', error);
+    console.log(`❌ Selected companies query failed, falling back to all companies`);
+    // Fallback to all companies if there's an error
+    return getAllCompanies();
+  }
+};
+
 export const weaviateService = {
   weaviate,
   storeCompanyEthics,
@@ -373,4 +426,5 @@ export const weaviateService = {
   findCompanyByNameFuzzy,
   searchCompanyByName,
   getAllCompanies,
+  getSelectedCompanies,
 } as const;

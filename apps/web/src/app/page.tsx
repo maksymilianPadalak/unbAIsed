@@ -37,7 +37,7 @@ export default function Home() {
           <Link href="/search">
             <div className="brutalist-button text-center py-4 px-6 hover:scale-105 transform transition-all duration-100">
               <span className="text-lg sm:text-xl md:text-2xl font-black">
-                RESEARCH ANY COMPANY
+                Search for company
               </span>
             </div>
           </Link>

@@ -84,8 +84,33 @@ export const handleGetAllCompanies = async (
   }
 };
 
+export const handleGetSelectedCompanies = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    console.log('🎠 Fetching selected companies for carousel...');
+    
+    const companies = await weaviateService.getSelectedCompanies();
+    
+    res.json({
+      success: true,
+      companies: companies,
+      count: companies.length
+    });
+  } catch (error) {
+    console.error('Error fetching selected companies:', error);
+    res.status(500).json({ 
+      success: false,
+      error: 'Failed to fetch selected companies',
+      companies: []
+    });
+  }
+};
+
 export const weaviateController = {
   handleWeaviateRequest,
   handleCompanySearch,
   handleGetAllCompanies,
+  handleGetSelectedCompanies,
 } as const;

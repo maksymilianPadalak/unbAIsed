@@ -8,6 +8,7 @@ export const API_BASE_URL = process.env.NEXT_PUBLIC_API_ADDRESS || 'http://local
 export const apiEndpoints = {
   weaviate: {
     companies: `${API_BASE_URL}/api/weaviate/companies`,
+    selectedCompanies: `${API_BASE_URL}/api/weaviate/companies/selected`,
     search: `${API_BASE_URL}/api/weaviate/search`,
   },
   openai: `${API_BASE_URL}/api/open-ai`,

@@ -11,6 +11,7 @@ export const createWeaviateRouter = (): Router => {
 
   router.get('/', weaviateController.handleWeaviateRequest);
   router.get('/companies', weaviateController.handleGetAllCompanies);
+  router.get('/companies/selected', weaviateController.handleGetSelectedCompanies);
   router.post('/search', weaviateController.handleCompanySearch);
 
   return router;
