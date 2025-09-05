@@ -133,99 +133,84 @@ const generateNameVariations = (companyName: string): string[] => {
   return Array.from(variations);
 };
 
+// Build a safe LIKE pattern to bridge spacing/punctuation differences
+// Example: "Open AI" -> "*open*ai*"
+const buildLikePattern = (raw: string): string | null => {
+  const norm = raw
+    .trim()
+    .normalize('NFKD').replace(/[\u0300-\u036f]/g, '') // strip accents
+    .toLowerCase();
+
+  if (!norm) return null;
+
+  // Replace non-alphanumerics with '*', wrap with '*' for contains
+  let pattern = `*${norm.replace(/[^a-z0-9]+/gi, '*')}*`;
+
+  // Collapse multiple '*' to reduce pathological patterns
+  pattern = pattern.replace(/\*+/g, '*');
+
+  // Guard: require at least a few alphanumerics
+  if (pattern.replace(/\*/g, '').length < 3) return null;
+
+  return pattern;
+};
+
+
 const findCompanyByNameFuzzy = async (companyName: string): Promise<CompanyEthics | null> => {
   try {
     console.log(`🧠 AI vector search for company: ${companyName}`);
-    
-    // Try hybrid search first (combines vector similarity + BM25 keyword search)
+
+    // 1) Try LIKE first to bridge spacing/punctuation differences: "open ai" -> "*open*ai*"
     try {
-      console.log('Trying hybrid search (vector + keyword)...');
-      const hybridResult = await WeaviateClient.graphql
-        .get()
-        .withClassName('CompanyEthics')
-        .withHybrid({
-          query: companyName,
-          alpha: 0.5, // 50/50 balance between vector and keyword search
-        })
-        .withFields('name description ethicalScore scoreRationale goodImpactArticles { description url date } badImpactArticles { description url date }')
-        .withLimit(5)
-        .do();
-      
-      const hybridCompanies = hybridResult?.data?.Get?.CompanyEthics;
-      if (hybridCompanies && hybridCompanies.length > 0) {
-        console.log(`✅ Found ${hybridCompanies.length} matches with hybrid search`);
-        return hybridCompanies[0] as CompanyEthics;
+      console.log('Trying LIKE search on name field...');
+      const likePattern = buildLikePattern(companyName);
+      if (likePattern) {
+        const likeRes = await WeaviateClient.graphql
+          .get()
+          .withClassName('CompanyEthics')
+          .withWhere({
+            path: ['name'],
+            operator: 'Like',
+            valueText: likePattern, // if `name` is a string property, switch to valueString
+          })
+          .withFields('name description ethicalScore scoreRationale goodImpactArticles { description url date } badImpactArticles { description url date }')
+          .withLimit(5)
+          .do();
+
+        const likeCompanies = likeRes?.data?.Get?.CompanyEthics;
+        if (likeCompanies && likeCompanies.length > 0) {
+          console.log(`✅ Found ${likeCompanies.length} matches with LIKE search`);
+          return likeCompanies[0] as CompanyEthics; // LIKE is a filter; first match
+        }
       }
-    } catch (hybridError) {
-      console.error('Hybrid search failed:', hybridError);
+    } catch (e) {
+      console.error('LIKE search failed:', e);
     }
-    
-    // Try pure vector search (semantic similarity)
+
+    // 2) BM25 keyword search on NAME field for ranking
     try {
-      console.log('Trying pure vector search...');
-      const vectorResult = await WeaviateClient.graphql
-        .get()
-        .withClassName('CompanyEthics')
-        .withNearText({ concepts: [companyName] })
-        .withFields('name description ethicalScore')
-        .withLimit(5)
-        .do();
-      
-      const vectorCompanies = vectorResult?.data?.Get?.CompanyEthics;
-      if (vectorCompanies && vectorCompanies.length > 0) {
-        console.log(`✅ Found ${vectorCompanies.length} matches with vector search`);
-        return vectorCompanies[0] as CompanyEthics;
-      }
-    } catch (vectorError) {
-      console.error('Vector search failed:', vectorError);
-    }
-    
-    // Try BM25 keyword search as fallback
-    try {
-      console.log('Trying BM25 keyword search...');
+      console.log('Trying BM25 keyword search on name field...');
       const bm25Result = await WeaviateClient.graphql
         .get()
         .withClassName('CompanyEthics')
-        .withBm25({ query: companyName })
+        .withBm25({ 
+          query: companyName,
+          properties: ['name'] // Search only in the name field
+        })
         .withFields('name description ethicalScore scoreRationale goodImpactArticles { description url date } badImpactArticles { description url date }')
         .withLimit(5)
         .do();
       
       const bm25Companies = bm25Result?.data?.Get?.CompanyEthics;
       if (bm25Companies && bm25Companies.length > 0) {
-        console.log(`✅ Found ${bm25Companies.length} matches with BM25 search`);
+        console.log(`✅ Found ${bm25Companies.length} matches with BM25 name search`);
         return bm25Companies[0] as CompanyEthics;
       }
     } catch (bm25Error) {
-      console.error('BM25 search failed:', bm25Error);
+      console.error('BM25 name search failed:', bm25Error);
     }
-    
-    // Fallback to string variations for edge cases
-    const nameVariations = generateNameVariations(companyName);
-    for (const variation of nameVariations.slice(0, 3)) { // Limit to avoid too many requests
-      try {
-        const likeResult = await WeaviateClient.graphql
-          .get()
-          .withClassName('CompanyEthics')
-          .withWhere({
-            path: ['name'],
-            operator: 'Like',
-            valueText: `*${variation}*`,
-          })
-          .withFields('name description ethicalScore scoreRationale goodImpactArticles { description url date } badImpactArticles { description url date }')
-          .withLimit(1)
-          .do();
-        
-        const likeCompanies = likeResult?.data?.Get?.CompanyEthics;
-        if (likeCompanies && likeCompanies.length > 0) {
-          console.log(`✅ Found match with Like search for "${variation}"`);
-          return likeCompanies[0] as CompanyEthics;
-        }
-      } catch (likeError) {
-        console.error(`Like search failed for "${variation}":`, likeError);
-      }
-    }
-    
+
+
     console.log(`❌ No companies found for AI search: ${companyName}`);
     return null;
   } catch (error) {
