@@ -19,21 +19,26 @@ export default function CompanyPage() {
       try {
         setLoading(true);
         setError(null);
-        
+
         const response = await fetch(apiEndpoints.weaviate.companies);
-        
+
         if (!response.ok) {
           throw new Error(`Failed to fetch companies: ${response.status}`);
         }
-        
+
         const data = await response.json();
-        
+
         if (data.success && data.companies) {
           // Find company by converting name to slug format and matching
-          const foundCompany = data.companies.find((comp: CompanyEthics) => 
-            comp.name.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '') === slug
+          const foundCompany = data.companies.find(
+            (comp: CompanyEthics) =>
+              comp.name
+                .toLowerCase()
+                .replace(/[^a-z0-9]/g, '-')
+                .replace(/-+/g, '-')
+                .replace(/^-|-$/g, '') === slug
           );
-          
+
           if (foundCompany) {
             setCompany(foundCompany);
           } else {
@@ -69,6 +74,11 @@ export default function CompanyPage() {
     return 'TERRIBLE';
   };
 
+  const hasSplitLinks = (c?: CompanyEthics | null) =>
+    !!c &&
+    ((c.goodImpactArticles && c.goodImpactArticles.length > 0) ||
+      (c.badImpactArticles && c.badImpactArticles.length > 0));
+
   if (loading) {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center">
@@ -102,12 +112,16 @@ export default function CompanyPage() {
   return (
     <div className="min-h-screen bg-black py-8">
       <div className="max-w-4xl lg:max-w-6xl xl:max-w-7xl 2xl:max-w-[100rem] mx-auto px-4 sm:px-6 lg:px-8">
-        
         {/* Back Button */}
         <div className="mb-8">
-          <Link href="/" className="brutalist-button inline-flex items-center space-x-2 px-4 py-2">
+          <Link
+            href="/"
+            className="brutalist-button inline-flex items-center space-x-2 px-4 py-2"
+          >
             <ArrowLeft className="w-5 h-5" />
-            <span className="font-mono font-bold text-sm sm:text-base">BACK TO HOME</span>
+            <span className="font-mono font-bold text-sm sm:text-base">
+              BACK TO HOME
+            </span>
           </Link>
         </div>
 
@@ -117,17 +131,21 @@ export default function CompanyPage() {
             <h1 className="text-3xl sm:text-4xl lg:text-6xl font-black text-white font-mono tracking-wider mb-6">
               {company.name}
             </h1>
-            
+
             {/* Ethics Score Display */}
             <div className="border-t-4 border-white pt-6">
               <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-8">
                 <span className="text-white font-mono font-bold text-xl sm:text-2xl">
                   ETHICS SCORE:
                 </span>
-                <span className={`text-4xl sm:text-6xl font-black font-mono ${getScoreColor(company.ethicalScore)}`}>
+                <span
+                  className={`text-4xl sm:text-6xl font-black font-mono ${getScoreColor(company.ethicalScore)}`}
+                >
                   {company.ethicalScore}/10
                 </span>
-                <span className={`border-3 border-white text-lg sm:text-xl px-4 py-2 font-mono font-bold uppercase tracking-wider ${getScoreColor(company.ethicalScore)} bg-black`}>
+                <span
+                  className={`border-3 border-white text-lg sm:text-xl px-4 py-2 font-mono font-bold uppercase tracking-wider ${getScoreColor(company.ethicalScore)} bg-black`}
+                >
                   {getScoreLabel(company.ethicalScore)}
                 </span>
               </div>
@@ -147,40 +165,89 @@ export default function CompanyPage() {
           </div>
         </div>
 
-        {/* Research Links */}
-        {company.usefulLinks && company.usefulLinks.length > 0 && (
+        {company.scoreRationale && (
           <div className="mb-12">
             <div className="border-4 border-white p-6 sm:p-8 bg-black">
               <h2 className="text-2xl sm:text-3xl font-black text-white font-mono tracking-wider mb-6 uppercase">
-                RESEARCH LINKS
+                SCORE RATIONALE
               </h2>
-              <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
-                {company.usefulLinks.map((link, index) => (
-                  <a
-                    key={index}
-                    href={link.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="brutalist-button text-left px-4 py-4 flex items-start justify-between group hover:scale-[1.02] transition-all duration-100"
-                  >
-                    <span className="font-mono text-sm sm:text-base font-bold mr-3 leading-tight">
-                      {link.description}
-                    </span>
-                    <ExternalLink className="w-5 h-5 flex-shrink-0 mt-0.5 group-hover:scale-110 transition-transform" />
-                  </a>
-                ))}
-              </div>
+              <p className="text-white font-mono leading-relaxed text-lg sm:text-xl opacity-90">
+                {company.scoreRationale}
+              </p>
             </div>
+          </div>
+        )}
+
+        {hasSplitLinks(company) && (
+          <div className="mb-12 space-y-8">
+            {company.goodImpactArticles &&
+              company.goodImpactArticles.length > 0 && (
+                <div className="border-4 border-white p-6 sm:p-8 bg-black">
+                  <h2 className="text-2xl sm:text-3xl font-black text-white font-mono tracking-wider mb-6 uppercase">
+                    POSITIVE IMPACT ARTICLES
+                  </h2>
+                  <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
+                    {company.goodImpactArticles.map((link, index) => (
+                      <a
+                        key={`good-${index}`}
+                        href={link.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="brutalist-button text-left px-4 py-4 flex items-start justify-between group hover:scale-[1.02] transition-all duration-100"
+                      >
+                        <span className="font-mono text-sm sm:text-base font-bold mr-3 leading-tight">
+                          {link.description}
+                        </span>
+                        <ExternalLink className="w-5 h-5 flex-shrink-0 mt-0.5 group-hover:scale-110 transition-transform" />
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              )}
+            {company.badImpactArticles &&
+              company.badImpactArticles.length > 0 && (
+                <div className="border-4 border-white p-6 sm:p-8 bg-black">
+                  <h2 className="text-2xl sm:text-3xl font-black text-white font-mono tracking-wider mb-6 uppercase">
+                    NEGATIVE IMPACT ARTICLES
+                  </h2>
+                  <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
+                    {company.badImpactArticles.map((link, index) => (
+                      <a
+                        key={`bad-${index}`}
+                        href={link.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="brutalist-button text-left px-4 py-4 flex items-start justify-between group hover:scale-[1.02] transition-all duration-100"
+                      >
+                        <span className="font-mono text-sm sm:text-base font-bold mr-3 leading-tight">
+                          {link.description}
+                        </span>
+                        <ExternalLink className="w-5 h-5 flex-shrink-0 mt-0.5 group-hover:scale-110 transition-transform" />
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              )}
           </div>
         )}
 
         {/* Action Buttons */}
         <div className="text-center space-y-4 sm:space-y-0 sm:space-x-4 sm:flex sm:justify-center">
-          <Link href="/company-scores" className="brutalist-button px-6 py-3 inline-block">
-            <span className="font-mono font-bold text-base sm:text-lg">VIEW ALL COMPANIES</span>
+          <Link
+            href="/company-scores"
+            className="brutalist-button px-6 py-3 inline-block"
+          >
+            <span className="font-mono font-bold text-base sm:text-lg">
+              VIEW ALL COMPANIES
+            </span>
           </Link>
-          <Link href="/search" className="brutalist-button px-6 py-3 inline-block">
-            <span className="font-mono font-bold text-base sm:text-lg">SEARCH MORE</span>
+          <Link
+            href="/search"
+            className="brutalist-button px-6 py-3 inline-block"
+          >
+            <span className="font-mono font-bold text-base sm:text-lg">
+              SEARCH MORE
+            </span>
           </Link>
         </div>
       </div>

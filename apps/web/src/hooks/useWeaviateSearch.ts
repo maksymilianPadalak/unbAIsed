@@ -72,7 +72,6 @@ export const useWeaviateSearch = () => {
       if (response.ok && data.found && data.data) {
         setResults([data.data]);
       } else if (response.status === 404 || (response.ok && !data.found)) {
-        // No company found in database - trigger OpenAI research
         setResults([]);
         await performResearch(trimmedName);
       } else {

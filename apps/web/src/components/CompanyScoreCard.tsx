@@ -21,6 +21,33 @@ export default function CompanyScoreCard({ company, showLinks = true }: CompanyS
     return 'TERRIBLE';
   };
 
+  const hasSplitLinks = (company.goodImpactArticles && company.goodImpactArticles.length > 0) ||
+    (company.badImpactArticles && company.badImpactArticles.length > 0);
+
+  const LinkList = ({ title, links, small }: { title: string; links: NonNullable<CompanyEthics['goodImpactArticles']>; small?: boolean }) => (
+    <div>
+      <h4 className={`text-white font-black font-mono ${small ? 'text-sm sm:text-lg' : 'text-2xl'} mb-3 uppercase tracking-wide`}>
+        {title}
+      </h4>
+      <div className="grid gap-2">
+        {links.map((link, index) => (
+          <a
+            key={`${title}-${index}`}
+            href={link.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`brutalist-button text-left ${small ? 'px-3 py-2' : 'px-4 py-4'} flex items-start justify-between group hover:scale-[1.02] transition-all duration-100`}
+          >
+            <span className={`font-mono ${small ? 'text-xs sm:text-sm' : 'text-lg'} font-bold mr-2 leading-tight`}>
+              {link.description}
+            </span>
+            <ExternalLink className={`${small ? 'w-4 h-4' : 'w-5 h-5'} flex-shrink-0 mt-0.5 group-hover:scale-110 transition-transform`} />
+          </a>
+        ))}
+      </div>
+    </div>
+  );
+
   return (
     <div className="brutalist-border bg-black p-4 sm:p-6 mb-6 hover:bg-gray-900 transition-all duration-100">
       {/* Mobile Layout */}
@@ -52,35 +79,32 @@ export default function CompanyScoreCard({ company, showLinks = true }: CompanyS
         </div>
 
         {/* Description */}
-        <div className="mb-6 overflow-hidden">
+        <div className="mb-4 overflow-hidden">
           <p className="text-white font-mono leading-relaxed text-sm sm:text-lg break-words max-w-full">
             {company.description}
           </p>
         </div>
 
-        {/* Useful Links */}
-        {showLinks && company.usefulLinks && company.usefulLinks.length > 0 && (
-          <div>
-            <h4 className="text-white font-black font-mono text-sm sm:text-lg mb-3 uppercase tracking-wide">
-              RESEARCH LINKS:
+        {company.scoreRationale && (
+          <div className="mb-6 overflow-hidden">
+            <h4 className="text-white font-black font-mono text-sm sm:text-lg mb-2 uppercase tracking-wide">
+              SCORE RATIONALE:
             </h4>
-            <div className="grid gap-2">
-              {company.usefulLinks.map((link, index) => (
-                <a
-                  key={index}
-                  href={link.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="brutalist-button text-left px-3 py-2 flex items-start justify-between group"
-                >
-                  <span className="font-mono text-xs sm:text-sm font-bold mr-2 leading-tight">
-                    {link.description}
-                  </span>
-                  <ExternalLink className="w-4 h-4 flex-shrink-0 mt-0.5 group-hover:scale-110 transition-transform" />
-                </a>
-              ))}
-            </div>
+            <p className="text-white font-mono leading-relaxed text-sm sm:text-base break-words max-w-full opacity-90">
+              {company.scoreRationale}
+            </p>
           </div>
+        )}
+
+        {showLinks && hasSplitLinks && (
+            <div className="space-y-4">
+              {company.goodImpactArticles && company.goodImpactArticles.length > 0 && (
+                <LinkList title="POSITIVE IMPACT ARTICLES:" links={company.goodImpactArticles} small />
+              )}
+              {company.badImpactArticles && company.badImpactArticles.length > 0 && (
+                <LinkList title="NEGATIVE IMPACT ARTICLES:" links={company.badImpactArticles} small />
+              )}
+            </div>
         )}
       </div>
 
@@ -109,35 +133,33 @@ export default function CompanyScoreCard({ company, showLinks = true }: CompanyS
         </div>
 
         {/* Description */}
-        <div className="mb-8 overflow-hidden">
+        <div className="mb-6 overflow-hidden">
           <p className="text-white font-mono leading-relaxed text-2xl break-words max-w-full">
             {company.description}
           </p>
         </div>
 
-        {/* Links in Multiple Columns */}
-        {showLinks && company.usefulLinks && company.usefulLinks.length > 0 && (
-          <div>
-            <h4 className="text-white font-black font-mono text-2xl mb-6 uppercase tracking-wide">
-              RESEARCH LINKS:
+        {/* Score Rationale */}
+        {company.scoreRationale && (
+          <div className="mb-8 overflow-hidden">
+            <h4 className="text-white font-black font-mono text-2xl mb-3 uppercase tracking-wide">
+              SCORE RATIONALE:
             </h4>
-            <div className="grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-4">
-              {company.usefulLinks.map((link, index) => (
-                <a
-                  key={index}
-                  href={link.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="brutalist-button text-left px-4 py-4 flex items-start justify-between group hover:scale-[1.02] transition-all duration-100"
-                >
-                  <span className="font-mono text-lg font-bold mr-3 leading-tight">
-                    {link.description}
-                  </span>
-                  <ExternalLink className="w-5 h-5 flex-shrink-0 mt-0.5 group-hover:scale-110 transition-transform" />
-                </a>
-              ))}
-            </div>
+            <p className="text-white font-mono leading-relaxed text-xl break-words max-w-full opacity-90">
+              {company.scoreRationale}
+            </p>
           </div>
+        )}
+
+        {showLinks && hasSplitLinks && (
+            <div className="space-y-6">
+              {company.goodImpactArticles && company.goodImpactArticles.length > 0 && (
+                <LinkList title="POSITIVE IMPACT ARTICLES:" links={company.goodImpactArticles} />
+              )}
+              {company.badImpactArticles && company.badImpactArticles.length > 0 && (
+                <LinkList title="NEGATIVE IMPACT ARTICLES:" links={company.badImpactArticles} />
+              )}
+            </div>
         )}
       </div>
     </div>

@@ -7,7 +7,7 @@ const weaviate = async () => {
     .withClass({
       class: 'CompanyEthics',
       description:
-        'Morality audits of companies with short description, an ethical score, and supporting research links.',
+        'Morality audits of companies with description, ethical score, rationale, and positive/negative impact articles.',
       vectorizer: 'text2vec-openai',
       moduleConfig: {
         'text2vec-openai': {
@@ -37,12 +37,32 @@ const weaviate = async () => {
           }
         },
         { name: 'ethicalScore', dataType: ['number'] },
+        { 
+          name: 'scoreRationale', 
+          dataType: ['text'],
+          moduleConfig: {
+            'text2vec-openai': {
+              skip: false,
+              vectorizePropertyName: false
+            }
+          }
+        },
         {
-          name: 'usefulLinks',
+          name: 'goodImpactArticles',
           dataType: ['object[]'],
           nestedProperties: [
             { name: 'description', dataType: ['text'] },
             { name: 'url', dataType: ['text'] },
+            { name: 'date', dataType: ['text'] },
+          ],
+        },
+        {
+          name: 'badImpactArticles',
+          dataType: ['object[]'],
+          nestedProperties: [
+            { name: 'description', dataType: ['text'] },
+            { name: 'url', dataType: ['text'] },
+            { name: 'date', dataType: ['text'] },
           ],
         },
       ],
@@ -59,7 +79,7 @@ const getAllCompanies = async (): Promise<any[]> => {
     const result = await WeaviateClient.graphql
       .get()
       .withClassName('CompanyEthics')
-      .withFields('name description ethicalScore usefulLinks { description url }')
+.withFields('name description ethicalScore scoreRationale goodImpactArticles { description url date } badImpactArticles { description url date }')
       .withLimit(100) // Set a reasonable limit
       .do();
     
@@ -127,7 +147,7 @@ const findCompanyByNameFuzzy = async (companyName: string): Promise<CompanyEthic
           query: companyName,
           alpha: 0.5, // 50/50 balance between vector and keyword search
         })
-        .withFields('name description ethicalScore usefulLinks { description url }')
+        .withFields('name description ethicalScore scoreRationale goodImpactArticles { description url date } badImpactArticles { description url date }')
         .withLimit(5)
         .do();
       
@@ -147,7 +167,7 @@ const findCompanyByNameFuzzy = async (companyName: string): Promise<CompanyEthic
         .get()
         .withClassName('CompanyEthics')
         .withNearText({ concepts: [companyName] })
-        .withFields('name description ethicalScore usefulLinks { description url }')
+        .withFields('name description ethicalScore')
         .withLimit(5)
         .do();
       
@@ -167,7 +187,7 @@ const findCompanyByNameFuzzy = async (companyName: string): Promise<CompanyEthic
         .get()
         .withClassName('CompanyEthics')
         .withBm25({ query: companyName })
-        .withFields('name description ethicalScore usefulLinks { description url }')
+        .withFields('name description ethicalScore scoreRationale goodImpactArticles { description url date } badImpactArticles { description url date }')
         .withLimit(5)
         .do();
       
@@ -192,7 +212,7 @@ const findCompanyByNameFuzzy = async (companyName: string): Promise<CompanyEthic
             operator: 'Like',
             valueText: `*${variation}*`,
           })
-          .withFields('name description ethicalScore usefulLinks { description url }')
+          .withFields('name description ethicalScore scoreRationale goodImpactArticles { description url date } badImpactArticles { description url date }')
           .withLimit(1)
           .do();
         
@@ -226,7 +246,7 @@ const findCompanyByName = async (companyName: string): Promise<{ id: string; dat
         operator: 'Equal',
         valueText: companyName,
       })
-      .withFields('name description ethicalScore usefulLinks { description url }')
+      .withFields('name description ethicalScore')
       .withLimit(1)
       .do();
     
@@ -272,7 +292,9 @@ const updateCompanyEthics = async (id: string, companyData: CompanyEthics): Prom
         name: companyData.name,
         description: companyData.description,
         ethicalScore: companyData.ethicalScore,
-        usefulLinks: companyData.usefulLinks,
+        scoreRationale: companyData.scoreRationale,
+        goodImpactArticles: companyData.goodImpactArticles || [],
+        badImpactArticles: companyData.badImpactArticles || [],
       })
       .do();
     
@@ -300,7 +322,9 @@ const createCompanyEthics = async (companyData: CompanyEthics): Promise<{ id: st
         name: companyData.name,
         description: companyData.description,
         ethicalScore: companyData.ethicalScore,
-        usefulLinks: companyData.usefulLinks,
+        scoreRationale: companyData.scoreRationale,
+        goodImpactArticles: companyData.goodImpactArticles || [],
+        badImpactArticles: companyData.badImpactArticles || [],
       })
       .do();
     
