@@ -1,5 +1,4 @@
 import { CompanyEthics } from '../../../../../types';
-import { apiEndpoints } from '../../lib/api-config';
 import CompanyScoresPageClient from './CompanyScoresPageClient';
 import { Metadata } from 'next';
 

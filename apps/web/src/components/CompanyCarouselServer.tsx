@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { CompanyEthics } from '../../../../types';
 import CompanyCarousel from './CompanyCarousel';
 

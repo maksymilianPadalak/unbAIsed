@@ -16,8 +16,9 @@ export default function CompanyCarousel({ companies }: CompanyCarouselProps) {
       align: 'start',
       containScroll: 'trimSnaps',
       dragFree: true,
+      duration: 6000,
     },
-    [Autoplay({ delay: 2000, stopOnInteraction: false })]
+    [Autoplay({ delay: 0, stopOnInteraction: false })]
   );
 
   // Shuffle function to randomize company order
