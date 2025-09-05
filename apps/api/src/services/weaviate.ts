@@ -38,7 +38,7 @@ const weaviate = async () => {
         },
         { name: 'ethicalScore', dataType: ['number'] },
         { 
-          name: 'scoreRationale', 
+          name: 'reasoning', 
           dataType: ['text'],
           moduleConfig: {
             'text2vec-openai': {
@@ -79,7 +79,7 @@ const getAllCompanies = async (): Promise<any[]> => {
     const result = await WeaviateClient.graphql
       .get()
       .withClassName('CompanyEthics')
-.withFields('name description ethicalScore scoreRationale goodImpactArticles { description url date } badImpactArticles { description url date }')
+.withFields('name description ethicalScore reasoning goodImpactArticles { description url date } badImpactArticles { description url date }')
       .withLimit(100) // Set a reasonable limit
       .do();
     
@@ -173,7 +173,7 @@ const findCompanyByNameFuzzy = async (companyName: string): Promise<CompanyEthic
             operator: 'Like',
             valueText: likePattern, // if `name` is a string property, switch to valueString
           })
-          .withFields('name description ethicalScore scoreRationale goodImpactArticles { description url date } badImpactArticles { description url date }')
+          .withFields('name description ethicalScore reasoning goodImpactArticles { description url date } badImpactArticles { description url date }')
           .withLimit(5)
           .do();
 
@@ -197,7 +197,7 @@ const findCompanyByNameFuzzy = async (companyName: string): Promise<CompanyEthic
           query: companyName,
           properties: ['name'] // Search only in the name field
         })
-        .withFields('name description ethicalScore scoreRationale goodImpactArticles { description url date } badImpactArticles { description url date }')
+        .withFields('name description ethicalScore reasoning goodImpactArticles { description url date } badImpactArticles { description url date }')
         .withLimit(5)
         .do();
       
@@ -277,7 +277,7 @@ const updateCompanyEthics = async (id: string, companyData: CompanyEthics): Prom
         name: companyData.name,
         description: companyData.description,
         ethicalScore: companyData.ethicalScore,
-        scoreRationale: companyData.scoreRationale,
+        reasoning: companyData.reasoning,
         goodImpactArticles: companyData.goodImpactArticles || [],
         badImpactArticles: companyData.badImpactArticles || [],
       })
@@ -307,7 +307,7 @@ const createCompanyEthics = async (companyData: CompanyEthics): Promise<{ id: st
         name: companyData.name,
         description: companyData.description,
         ethicalScore: companyData.ethicalScore,
-        scoreRationale: companyData.scoreRationale,
+        reasoning: companyData.reasoning,
         goodImpactArticles: companyData.goodImpactArticles || [],
         badImpactArticles: companyData.badImpactArticles || [],
       })

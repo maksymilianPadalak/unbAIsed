@@ -114,13 +114,13 @@ export default function CompanyScoreCard({
         </div>
 
         {/* Reasoning / Rationale */}
-        {showReasoning && company.scoreRationale && (
+        {showReasoning && company.reasoning && (
           <div className="mb-4">
             <h4 className="text-white font-black font-mono text-sm sm:text-lg uppercase tracking-wide mb-2">
               REASONING
             </h4>
             <p className="text-white font-mono leading-relaxed text-sm sm:text-lg break-words max-w-full opacity-90">
-              {company.scoreRationale}
+              {company.reasoning}
             </p>
           </div>
         )}
@@ -181,13 +181,13 @@ export default function CompanyScoreCard({
         </div>
 
         {/* Reasoning / Rationale */}
-        {showReasoning && company.scoreRationale && (
+        {showReasoning && company.reasoning && (
           <div className="mb-8">
             <h4 className="text-white font-black font-mono text-2xl uppercase tracking-wide mb-3">
               REASONING
             </h4>
             <p className="text-white font-mono leading-relaxed text-2xl break-words max-w-full opacity-90">
-              {company.scoreRationale}
+              {company.reasoning}
             </p>
           </div>
         )}

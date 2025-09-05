@@ -1,8 +1,9 @@
-'use client';
-
 import Link from 'next/link';
 import StarryAI from '../components/StarryAI';
-import CompanyCarousel from '../components/CompanyCarousel';
+import CompanyCarouselServer from '../components/CompanyCarouselServer';
+
+// ISR configuration
+export const revalidate = 300; // Revalidate every 5 minutes
 
 export default function Home() {
   return (
@@ -18,7 +19,7 @@ export default function Home() {
             </h1>
             <div className="border-t-4 border-white pt-6 sm:pt-8">
               <p className="text-lg sm:text-xl md:text-2xl font-bold text-white font-mono tracking-widest">
-                Make your own fu*king decision
+                AI based companies ethics scores
               </p>
             </div>
           </div>
@@ -43,7 +44,7 @@ export default function Home() {
         </div>
 
         {/* Company Carousel (header hidden to save space) */}
-        <CompanyCarousel />
+        <CompanyCarouselServer />
       </div>
     </div>
   );

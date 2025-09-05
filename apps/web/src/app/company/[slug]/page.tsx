@@ -166,14 +166,14 @@ export default function CompanyPage() {
           </div>
         </div>
 
-        {company.scoreRationale && (
+        {company.reasoning && (
           <div className="mb-12">
             <div className="border-4 border-white p-6 sm:p-8 bg-black">
               <h2 className="text-2xl sm:text-3xl font-black text-white font-mono tracking-wider mb-6 uppercase">
-                SCORE RATIONALE
+                REASONING
               </h2>
               <BrutalistMarkdown className="text-white text-lg sm:text-xl opacity-90">
-                {company.scoreRationale}
+                {company.reasoning}
               </BrutalistMarkdown>
             </div>
           </div>

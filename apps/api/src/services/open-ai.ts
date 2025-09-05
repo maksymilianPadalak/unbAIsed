@@ -15,7 +15,7 @@ export const getUnbiasedScore = async (
     '  "name": string,',
     '  "description": string,',
     '  "ethicalScore": number, // value from 0.0 to 10.0, in 0.1 increments',
-    '  "scoreRationale": string, // concise paragraph explaining what raised and lowered the score; reference sources inline if helpful',
+    '  "reasoning": string, // concise paragraph explaining what raised and lowered the score; reference sources inline if helpful',
     '  "goodImpactArticles": { "description": string, "url": string, "date"?: string }[],',
     '  "badImpactArticles": { "description": string, "url": string, "date"?: string }[],',
     '}',
@@ -24,7 +24,7 @@ export const getUnbiasedScore = async (
     '- For each source, add a short description. If available, include the publication date (ISO or YYYY-MM-DD).',
     '- Include at most 20 total sources across good and bad articles; skip dead or inaccessible links.',
     '- The description should describe what the company does, neutrally. No links here!',
-    '- The scoreRationale must mention both the positive drivers and the strongest drivers of the score.',
+    '- The reasoning must mention both the positive drivers and the strongest drivers of the score.',
     "- Don' make any rumors affect the score, just verified info.",
     '- Output strictly valid JSON. Do NOT include markdown, commentary, or extra text.',
   ].join('\n');
@@ -85,10 +85,8 @@ export const getUnbiasedScore = async (
       name: parsed.name,
       description: parsed.description,
       ethicalScore: parsed.ethicalScore,
-      scoreRationale:
-        typeof parsed.scoreRationale === 'string'
-          ? parsed.scoreRationale
-          : undefined,
+      reasoning:
+        typeof parsed.reasoning === 'string' ? parsed.reasoning : undefined,
       goodImpactArticles: goodDedup.slice(0, cap),
       badImpactArticles: badDedup,
     };

@@ -8,7 +8,7 @@ export type CompanyEthics = {
   name: string;
   description: string;
   ethicalScore: number;
-  scoreRationale?: string;
+  reasoning?: string;
   goodImpactArticles?: UsefulLink[];
   badImpactArticles?: UsefulLink[];
 };
