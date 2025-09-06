@@ -2,9 +2,9 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import ReactPaginate from 'react-paginate';
 import { CompanyEthics } from '../../../../../types';
 import CompanyScoreCard from '../../components/CompanyScoreCard';
+import Pagination from '../../components/Pagination';
 
 type SortOption = 'highest' | 'lowest' | null;
 
@@ -144,34 +144,11 @@ export default function CompanyScoresPageClient({
           })}
         </div>
 
-        {/* Pagination Controls */}
-        {totalPages > 1 && (
-          <div className="mt-12">
-            <ReactPaginate
-              pageCount={totalPages}
-              pageRangeDisplayed={3}
-              marginPagesDisplayed={1}
-              onPageChange={({ selected }) => handlePageChange(selected + 1)}
-              forcePage={currentPage - 1}
-              containerClassName="flex flex-wrap justify-center items-center gap-2"
-              pageClassName=""
-              pageLinkClassName="brutalist-button px-3 py-2 text-base block"
-              previousClassName=""
-              previousLinkClassName="brutalist-button px-4 py-2 text-base block"
-              nextClassName=""
-              nextLinkClassName="brutalist-button px-4 py-2 text-base block"
-              activeClassName=""
-              activeLinkClassName="brutalist-button brutalist-active px-3 py-2 text-base block"
-              disabledClassName="opacity-50 cursor-not-allowed"
-              disabledLinkClassName="brutalist-button px-4 py-2 text-base block opacity-50 cursor-not-allowed"
-              breakClassName=""
-              breakLinkClassName="text-white font-mono px-2 py-2"
-              previousLabel="PREV"
-              nextLabel="NEXT"
-              breakLabel="..."
-            />
-          </div>
-        )}
+        <Pagination
+          totalPages={totalPages}
+          currentPage={currentPage}
+          onPageChange={handlePageChange}
+        />
       </div>
     </div>
   );
