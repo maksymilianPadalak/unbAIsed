@@ -13,6 +13,7 @@ export const createWeaviateRouter = (): Router => {
   router.get('/companies', weaviateController.handleGetAllCompanies);
   router.get('/companies/selected', weaviateController.handleGetSelectedCompanies);
   router.post('/search', weaviateController.handleCompanySearch);
+  router.post('/research-requests', weaviateController.handleCreateResearchRequest);
 
   return router;
 };

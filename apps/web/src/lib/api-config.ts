@@ -10,6 +10,7 @@ export const apiEndpoints = {
     companies: `${API_BASE_URL}/api/weaviate/companies`,
     selectedCompanies: `${API_BASE_URL}/api/weaviate/companies/selected`,
     search: `${API_BASE_URL}/api/weaviate/search`,
+    researchRequests: `${API_BASE_URL}/api/weaviate/research-requests`,
   },
   openai: `${API_BASE_URL}/api/open-ai`,
   companyAnalysis: `${API_BASE_URL}/api/company-analysis`,

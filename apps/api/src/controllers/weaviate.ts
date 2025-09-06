@@ -5,6 +5,7 @@
 
 import { Request, Response } from 'express';
 import { weaviateService } from '../services/weaviate';
+import { ResearchRequest } from '../types/company-ethics';
 
 export const handleWeaviateRequest = async (
   req: Request,
@@ -108,9 +109,56 @@ export const handleGetSelectedCompanies = async (
   }
 };
 
+export const handleCreateResearchRequest = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const { companyName } = req.body;
+    
+    if (!companyName || typeof companyName !== 'string' || companyName.trim() === '') {
+      res.status(400).json({ 
+        error: 'Company name is required in request body',
+        success: false 
+      });
+      return;
+    }
+
+    console.log(`📝 Creating research request for company: ${companyName}`);
+    
+    const researchRequestData: ResearchRequest = {
+      companyName: companyName.trim(),
+      timestamp: new Date().toISOString(),
+    };
+    
+    const result = await weaviateService.createResearchRequest(researchRequestData);
+    
+    if (result.success) {
+      res.json({
+        success: true,
+        message: `Research request created for "${companyName}"`,
+        id: result.id,
+        companyName: companyName,
+      });
+    } else {
+      res.status(500).json({
+        success: false,
+        error: 'Failed to create research request',
+      });
+    }
+  } catch (error) {
+    console.error('Research request creation error:', error);
+    res.status(500).json({ 
+      error: 'Internal server error',
+      success: false
+    });
+  }
+};
+
 export const weaviateController = {
   handleWeaviateRequest,
   handleCompanySearch,
   handleGetAllCompanies,
   handleGetSelectedCompanies,
+  handleCreateResearchRequest,
 } as const;

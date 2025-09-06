@@ -1,7 +1,8 @@
 import WeaviateClient from '../clients/weaviateClient';
-import { CompanyEthics } from '../types/company-ethics';
+import { CompanyEthics, ResearchRequest } from '../types/company-ethics';
 
 const weaviate = async () => {
+  // Create CompanyEthics schema
   await WeaviateClient.schema
     .classCreator()
     .withClass({
@@ -64,6 +65,38 @@ const weaviate = async () => {
             { name: 'url', dataType: ['text'] },
             { name: 'date', dataType: ['text'] },
           ],
+        },
+      ],
+    })
+    .do();
+
+  // Create ResearchRequests schema
+  await WeaviateClient.schema
+    .classCreator()
+    .withClass({
+      class: 'ResearchRequests',
+      description: 'Research requests for companies that users want us to analyze with GPT-5 reasoning.',
+      vectorizer: 'text2vec-openai',
+      moduleConfig: {
+        'text2vec-openai': {
+          model: 'text-embedding-ada-002',
+          type: 'text'
+        }
+      },
+      properties: [
+        { 
+          name: 'companyName', 
+          dataType: ['text'],
+          moduleConfig: {
+            'text2vec-openai': {
+              skip: false,
+              vectorizePropertyName: true
+            }
+          }
+        },
+        { 
+          name: 'timestamp', 
+          dataType: ['text']
         },
       ],
     })
@@ -418,6 +451,63 @@ const getSelectedCompanies = async (): Promise<any[]> => {
   }
 };
 
+// Research Request functions
+const createResearchRequest = async (researchRequestData: ResearchRequest): Promise<{ id: string; success: boolean }> => {
+  try {
+    console.log(`📝 Creating research request: ${researchRequestData.companyName}`);
+    
+    const result = await WeaviateClient.data
+      .creator()
+      .withClassName('ResearchRequests')
+      .withProperties({
+        companyName: researchRequestData.companyName,
+        timestamp: researchRequestData.timestamp,
+      })
+      .do();
+    
+    if (!result.id) {
+      throw new Error('Weaviate did not return an ID for the created research request');
+    }
+    
+    console.log(`✅ Successfully created research request with ID: ${result.id}`);
+    
+    return {
+      id: result.id,
+      success: true,
+    };
+  } catch (error) {
+    console.error('Failed to create research request in Weaviate:', error);
+    throw new Error(`Weaviate research request creation failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+  }
+};
+
+const getAllResearchRequests = async (): Promise<any[]> => {
+  try {
+    console.log(`📋 Getting ALL research requests from Weaviate database...`);
+    
+    const result = await WeaviateClient.graphql
+      .get()
+      .withClassName('ResearchRequests')
+      .withFields('companyName timestamp _additional { id }')
+      .withLimit(100)
+      .do();
+    
+    const requests = result?.data?.Get?.ResearchRequests;
+    
+    if (requests && requests.length > 0) {
+      console.log(`✅ Found ${requests.length} research requests in Weaviate database`);
+      return requests;
+    } else {
+      console.log(`⚠️  No research requests found in Weaviate database`);
+      return [];
+    }
+  } catch (error) {
+    console.error('Error getting research requests from Weaviate:', error);
+    console.log(`❌ Weaviate research requests query failed`);
+    return [];
+  }
+};
+
 export const weaviateService = {
   weaviate,
   storeCompanyEthics,
@@ -427,4 +517,6 @@ export const weaviateService = {
   searchCompanyByName,
   getAllCompanies,
   getSelectedCompanies,
+  createResearchRequest,
+  getAllResearchRequests,
 } as const;

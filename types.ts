@@ -12,3 +12,9 @@ export type CompanyEthics = {
   goodImpactArticles?: UsefulLink[];
   badImpactArticles?: UsefulLink[];
 };
+
+export type ResearchRequest = {
+  companyName: string;
+  timestamp: string;
+  id?: string;
+};
