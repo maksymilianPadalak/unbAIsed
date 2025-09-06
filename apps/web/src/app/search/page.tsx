@@ -39,10 +39,7 @@ export default function SearchPage() {
         {/* Search Input */}
         <SearchInput 
           onSearch={handleSearch}
-          onStartResearch={(q) => { setHasSearched(true); performResearch(q); }}
           loading={loading || researching}
-          researching={researching}
-          showResearchCta={hasSearched && !loading && !researching}
           placeholder="SEARCH COMPANIES..."
         />
 

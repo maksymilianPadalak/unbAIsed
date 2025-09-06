@@ -23,8 +23,35 @@ export default function Pagination({
 
   return (
     <div className="mt-12">
-      {/* Mobile Pagination */}
-      <div className="block lg:hidden">
+      {/* Extra Narrow Screens - Only PREV/NEXT (below 400px) */}
+      <div className="block min-[400px]:hidden">
+        <ReactPaginate
+          pageCount={totalPages}
+          pageRangeDisplayed={0}
+          marginPagesDisplayed={0}
+          onPageChange={handlePageChange}
+          forcePage={currentPage - 1}
+          containerClassName="flex justify-center items-center gap-1"
+          pageClassName="hidden"
+          pageLinkClassName="hidden"
+          previousClassName="flex-shrink-0"
+          previousLinkClassName="brutalist-button px-2 py-1 text-xs block"
+          nextClassName="flex-shrink-0"
+          nextLinkClassName="brutalist-button px-2 py-1 text-xs block"
+          activeClassName="hidden"
+          activeLinkClassName="hidden"
+          disabledClassName="opacity-50 cursor-not-allowed flex-shrink-0"
+          disabledLinkClassName="brutalist-button px-2 py-1 text-xs block opacity-50 cursor-not-allowed"
+          breakClassName="hidden"
+          breakLinkClassName="hidden"
+          previousLabel="PREV"
+          nextLabel="NEXT"
+          breakLabel=""
+        />
+      </div>
+
+      {/* Mobile Pagination - Small screens (400px - lg) */}
+      <div className="hidden min-[400px]:block lg:hidden">
         <ReactPaginate
           pageCount={totalPages}
           pageRangeDisplayed={0}
@@ -34,9 +61,9 @@ export default function Pagination({
           containerClassName="flex justify-center items-center gap-1"
           pageClassName="flex-shrink-0"
           pageLinkClassName="brutalist-button px-2 py-1 text-xs block min-w-[1.5rem]"
-          previousClassName={currentPage === 3 ? 'hidden' : 'flex-shrink-0'}
+          previousClassName={currentPage === 3 ? "hidden" : "flex-shrink-0"}
           previousLinkClassName="brutalist-button px-2 py-1 text-xs block"
-          nextClassName={currentPage === 3 ? 'hidden' : 'flex-shrink-0'}
+          nextClassName={currentPage === 3 ? "hidden" : "flex-shrink-0"}
           nextLinkClassName="brutalist-button px-2 py-1 text-xs block"
           activeClassName="flex-shrink-0"
           activeLinkClassName="brutalist-button brutalist-active px-2 py-1 text-xs block min-w-[1.5rem]"

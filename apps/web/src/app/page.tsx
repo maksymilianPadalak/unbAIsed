@@ -19,7 +19,7 @@ export default function Home() {
             </h1>
             <div className="border-t-4 border-white pt-6 sm:pt-8">
               <p className="text-lg sm:text-xl md:text-2xl font-bold text-white font-mono tracking-widest">
-                AI based companies ethics scores
+                Ethical Ratings for Companies, Powered by AI
               </p>
             </div>
           </div>
@@ -27,8 +27,8 @@ export default function Home() {
 
         <div className="text-center w-full max-w-6xl mx-auto mb-4 sm:mb-8">
           <p className="text-white font-mono text-base sm:text-lg leading-relaxed opacity-90">
-            See companies’ Ethics Scores, based on GPT-5 research, with direct
-            links to sources
+            Scores are generated using GPT-5 high-reasoning with web research,
+            and linked to sources for transparency.
           </p>
         </div>
 
@@ -37,7 +37,7 @@ export default function Home() {
           <Link href="/search">
             <div className="brutalist-button text-center py-4 px-6 hover:scale-105 transform transition-all duration-100">
               <span className="text-lg sm:text-xl md:text-2xl font-black">
-                Search for company
+                Search Companies
               </span>
             </div>
           </Link>
