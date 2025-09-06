@@ -63,8 +63,6 @@ export default function CompanyScoresPageClient({
     setSortBy(option);
     setCurrentPage(1); // Reset to first page when sorting
 
-    let companiesToSort = searchQuery ? filteredCompanies : initialCompanies;
-
     if (option === null) {
       // Reset to original order
       setCompanies([...initialCompanies]);
@@ -76,6 +74,7 @@ export default function CompanyScoresPageClient({
       return;
     }
 
+    const companiesToSort = searchQuery ? filteredCompanies : initialCompanies;
     const sortedCompanies = [...companiesToSort].sort((a, b) => {
       if (option === 'highest') {
         return b.ethicalScore - a.ethicalScore;

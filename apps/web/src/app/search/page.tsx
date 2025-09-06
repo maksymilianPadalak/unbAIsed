@@ -10,8 +10,7 @@ export default function SearchPage() {
     search,
     loading, 
     results, 
-    error, 
-    currentSearchTerm 
+    error
   } = useWeaviateSearch();
   const [hasSearched, setHasSearched] = useState(false);
 
@@ -46,7 +45,6 @@ export default function SearchPage() {
           loading={loading}
           error={error}
           hasSearched={hasSearched}
-          currentSearchTerm={currentSearchTerm}
         />
       </div>
     </div>

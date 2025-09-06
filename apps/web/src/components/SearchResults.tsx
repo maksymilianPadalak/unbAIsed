@@ -7,15 +7,13 @@ interface SearchResultsProps {
   loading: boolean;
   error: string | null;
   hasSearched: boolean;
-  currentSearchTerm: string;
 }
 
 export default function SearchResults({ 
   results,
   loading, 
   error, 
-  hasSearched,
-  currentSearchTerm
+  hasSearched
 }: SearchResultsProps) {
 
   // Error state - PRIORITY 2
