@@ -1,5 +1,6 @@
 import { CompanyEthics } from '../../../../types';
 import { ExternalLink } from 'lucide-react';
+import BrutalistMarkdown from './BrutalistMarkdown';
 interface CompanyScoreCardProps {
   company: CompanyEthics;
   showLinks?: boolean;
@@ -119,9 +120,9 @@ export default function CompanyScoreCard({
             <h4 className="text-white font-black font-mono text-sm sm:text-lg uppercase tracking-wide mb-2">
               REASONING
             </h4>
-            <p className="text-white font-mono leading-relaxed text-sm sm:text-lg break-words max-w-full opacity-90">
+            <BrutalistMarkdown className="text-white text-sm sm:text-lg opacity-90">
               {company.reasoning}
-            </p>
+            </BrutalistMarkdown>
           </div>
         )}
 
@@ -186,9 +187,9 @@ export default function CompanyScoreCard({
             <h4 className="text-white font-black font-mono text-2xl uppercase tracking-wide mb-3">
               REASONING
             </h4>
-            <p className="text-white font-mono leading-relaxed text-2xl break-words max-w-full opacity-90">
+            <BrutalistMarkdown className="text-white text-2xl opacity-90">
               {company.reasoning}
-            </p>
+            </BrutalistMarkdown>
           </div>
         )}
 
