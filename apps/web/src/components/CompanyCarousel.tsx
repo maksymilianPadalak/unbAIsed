@@ -18,7 +18,7 @@ export default function CompanyCarousel({ companies }: CompanyCarouselProps) {
       dragFree: true,
       duration: 6000,
     },
-    [Autoplay({ delay: 0, stopOnInteraction: false })]
+    [Autoplay({ delay: 0, stopOnInteraction: true })]
   );
 
   // Shuffle function to randomize company order
@@ -103,7 +103,7 @@ export default function CompanyCarousel({ companies }: CompanyCarouselProps) {
         .embla__container {
           backface-visibility: hidden;
           display: flex;
-          touch-action: pan-y;
+          touch-action: manipulation;
           margin-left: -1.5rem;
         }
 
@@ -111,6 +111,31 @@ export default function CompanyCarousel({ companies }: CompanyCarouselProps) {
           flex: 0 0 auto;
           min-width: 0;
           padding-left: 1.5rem;
+          pointer-events: auto;
+        }
+
+        /* Mobile-specific fixes */
+        @media (max-width: 768px) {
+          .embla__container {
+            touch-action: manipulation;
+          }
+          
+          .carousel-card {
+            pointer-events: auto;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+          }
+          
+          .carousel-card:active {
+            background: #fff !important;
+            box-shadow: 4px 4px 0px #666 !important;
+          }
+          
+          .carousel-card:active * {
+            color: #000 !important;
+          }
         }
 
         /* Cards hover style */
