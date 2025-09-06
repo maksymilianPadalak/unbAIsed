@@ -40,7 +40,7 @@ export default function StarryLoader({
   const classes = sizeClasses[size];
 
   return (
-    <div className="w-full max-w-4xl mx-auto">
+    <div className="w-full max-w-4xl mx-auto px-4">
       <div className={`brutalist-border bg-gradient-to-br from-gray-900 via-black to-purple-900/30 ${classes.container} text-center overflow-hidden relative`}>
         {/* Animated space background */}
         <div className="absolute inset-0 opacity-30">
