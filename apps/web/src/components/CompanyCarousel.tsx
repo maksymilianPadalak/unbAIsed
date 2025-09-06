@@ -42,7 +42,7 @@ export default function CompanyCarousel({ companies }: CompanyCarouselProps) {
   };
 
   return (
-    <div className="w-full mb-16">
+    <div className="w-full mb-16 overflow-hidden">
       <div className="embla" ref={emblaRef}>
         <div className="embla__container">
           {shuffledCompanies.map((company, index) => {
@@ -84,6 +84,7 @@ export default function CompanyCarousel({ companies }: CompanyCarouselProps) {
       <style jsx global>{`
         .embla {
           position: relative;
+          overflow: hidden;
           mask-image: linear-gradient(
             to right,
             transparent,
