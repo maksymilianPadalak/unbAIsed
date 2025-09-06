@@ -7,6 +7,7 @@ import { ArrowLeft, ExternalLink } from 'lucide-react';
 import { CompanyEthics } from '../../../../../../types';
 import { apiEndpoints } from '../../../lib/api-config';
 import BrutalistMarkdown from '../../../components/BrutalistMarkdown';
+import StarryLoader from '../../../components/StarryLoader';
 
 export default function CompanyPage() {
   const params = useParams();
@@ -83,11 +84,11 @@ export default function CompanyPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center">
-        <div className="border-4 border-white p-8 bg-black">
-          <div className="text-white font-mono text-2xl font-bold tracking-wider animate-pulse">
-            LOADING COMPANY...
-          </div>
-        </div>
+        <StarryLoader 
+          title="LOADING COMPANY"
+          subtitle="Fetching company data and ethics analysis"
+          size="large"
+        />
       </div>
     );
   }

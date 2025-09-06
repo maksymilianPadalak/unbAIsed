@@ -11,47 +11,14 @@ interface SearchResponse {
 
 export const useWeaviateSearch = () => {
   const [loading, setLoading] = useState(false);
-  const [researching, setResearching] = useState(false);
   const [results, setResults] = useState<CompanyEthics[]>([]);
-  const [researchResults, setResearchResults] = useState<CompanyEthics[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [currentSearchTerm, setCurrentSearchTerm] = useState<string>('');
-
-  const performResearch = useCallback(async (companyName: string) => {
-    setResearching(true);
-    setCurrentSearchTerm(companyName.trim());
-
-    try {
-      const response = await fetch(apiEndpoints.openai, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          prompt: `Research and analyze the ethical practices of ${companyName}. Provide detailed information about their business practices, controversies, and overall ethical score.`,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error(`Research failed: ${response.statusText}`);
-      }
-
-      const researchData: CompanyEthics = await response.json();
-      setResearchResults([researchData]);
-    } catch (err) {
-      const errorMessage =
-        err instanceof Error ? err.message : 'Research failed';
-      setError(errorMessage);
-    } finally {
-      setResearching(false);
-    }
-  }, []);
 
   const search = useCallback(
     async (companyName: string) => {
       if (!companyName.trim()) {
         setResults([]);
-        setResearchResults([]);
         return;
       }
 
@@ -59,7 +26,6 @@ export const useWeaviateSearch = () => {
       setCurrentSearchTerm(trimmedName);
       setLoading(true);
       setError(null);
-      setResearchResults([]); // Clear previous research results
 
       try {
         const response = await fetch(apiEndpoints.weaviate.search, {
@@ -76,7 +42,6 @@ export const useWeaviateSearch = () => {
           setResults([data.data]);
         } else if (response.status === 404 || (response.ok && !data.found)) {
           setResults([]);
-          await performResearch(trimmedName);
         } else {
           throw new Error(
             data.message || `Search failed: ${response.statusText}`
@@ -91,23 +56,19 @@ export const useWeaviateSearch = () => {
         setLoading(false);
       }
     },
-    [performResearch]
+    []
   );
 
   const clearResults = useCallback(() => {
     setResults([]);
-    setResearchResults([]);
     setError(null);
     setCurrentSearchTerm('');
   }, []);
 
   return {
     search,
-    performResearch,
     loading,
-    researching,
     results,
-    researchResults,
     error,
     currentSearchTerm,
     clearResults,
