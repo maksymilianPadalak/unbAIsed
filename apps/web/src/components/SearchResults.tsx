@@ -1,8 +1,8 @@
 import { CompanyEthics } from '../../../../types';
-import CompanyScoreCard from './CompanyScoreCard';
 import StarryLoader from './StarryLoader';
 import { useState } from 'react';
 import { apiEndpoints } from '../lib/api-config';
+import Link from 'next/link';
 
 interface SearchResultsProps {
   results: CompanyEthics[];
@@ -164,7 +164,7 @@ export default function SearchResults({
               
               <form onSubmit={handleSubmitRequest} className="space-y-4">
                 <div>
-                  <label className="block text-white font-mono font-bold text-sm mb-2 uppercase tracking-wide">
+                  <label className="block text-white font-mono font-bold text-xs sm:text-sm mb-2 uppercase tracking-wide">
                     Company Name:
                   </label>
                   <input
@@ -172,7 +172,7 @@ export default function SearchResults({
                     value={companyName}
                     onChange={(e) => setCompanyName(e.target.value)}
                     placeholder="ENTER COMPANY NAME..."
-                    className="w-full brutalist-border bg-black text-white font-mono px-4 py-3 text-lg focus:outline-none focus:border-white placeholder-gray-500"
+                    className="w-full brutalist-border bg-black text-white font-mono px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-lg focus:outline-none focus:border-white placeholder-gray-500"
                     disabled={submitting}
                   />
                 </div>
@@ -210,10 +210,88 @@ export default function SearchResults({
             FOUND {results.length} RESULT{results.length !== 1 ? 'S' : ''}
           </h3>
         </div>
-        <div className="space-y-0">
-          {results.map((company, index) => (
-            <CompanyScoreCard key={`${company.name}-${index}`} company={company} disableHover={true} />
-          ))}
+        <div className="space-y-4">
+          {results.map((company, index) => {
+            const companySlug = company.name
+              .toLowerCase()
+              .replace(/[^a-z0-9]/g, '-')
+              .replace(/-+/g, '-')
+              .replace(/^-|-$/g, '');
+
+            const getScoreColor = (score: number): string => {
+              if (score >= 8) return 'text-green-400';
+              if (score >= 6) return 'text-yellow-400';
+              if (score >= 4) return 'text-orange-400';
+              return 'text-red-400';
+            };
+
+            const getScoreLabel = (score: number): string => {
+              if (score >= 8) return 'EXCELLENT';
+              if (score >= 6) return 'GOOD';
+              if (score >= 4) return 'POOR';
+              return 'TERRIBLE';
+            };
+
+            return (
+              <Link
+                key={`${company.name}-${index}`}
+                href={`/company/${companySlug}`}
+                className="block"
+              >
+                <div className="brutalist-border bg-black p-4 sm:p-6 hover:bg-gray-900 hover:scale-[1.01] transition-all duration-200 cursor-pointer">
+                  {/* Mobile Layout */}
+                  <div className="block lg:hidden">
+                    <div className="mb-3">
+                      <h3 className="text-xl sm:text-2xl font-black font-mono text-white uppercase tracking-wider mb-2">
+                        {company.name}
+                      </h3>
+                      <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+                        <span className="text-white font-mono font-bold text-sm sm:text-base">
+                          ETHICS SCORE:
+                        </span>
+                        <div className="flex items-center space-x-2">
+                          <span className={`text-2xl sm:text-3xl font-black font-mono ${getScoreColor(company.ethicalScore)}`}>
+                            {company.ethicalScore}/10
+                          </span>
+                          <span className={`border-2 border-white text-xs px-2 py-1 font-mono font-bold uppercase tracking-wider ${getScoreColor(company.ethicalScore)} bg-black`}>
+                            {getScoreLabel(company.ethicalScore)}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <p className="text-white font-mono text-sm sm:text-base leading-relaxed opacity-90 line-clamp-3">
+                      {company.description}
+                    </p>
+                  </div>
+
+                  {/* Desktop Layout */}
+                  <div className="hidden lg:block">
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1">
+                        <h3 className="text-3xl font-black font-mono text-white uppercase tracking-wider mb-3">
+                          {company.name}
+                        </h3>
+                        <p className="text-white font-mono text-lg leading-relaxed opacity-90 line-clamp-2 max-w-3xl">
+                          {company.description}
+                        </p>
+                      </div>
+                      <div className="ml-6 flex items-center space-x-4">
+                        <span className="text-white font-mono font-bold text-lg">
+                          ETHICS SCORE:
+                        </span>
+                        <span className={`text-4xl font-black font-mono ${getScoreColor(company.ethicalScore)}`}>
+                          {company.ethicalScore}/10
+                        </span>
+                        <span className={`border-3 border-white text-base px-4 py-2 font-mono font-bold uppercase tracking-wider ${getScoreColor(company.ethicalScore)} bg-black`}>
+                          {getScoreLabel(company.ethicalScore)}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            );
+          })}
         </div>
       </div>
     );
